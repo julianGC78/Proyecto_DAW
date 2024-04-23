@@ -11,13 +11,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
 import lombok.RequiredArgsConstructor;
-import paixel.modelo.UserRepository;
 
 @Configuration
 @RequiredArgsConstructor
-public class AplicationConfig {
-	private final UserRepository userRepository;
+public class ApplicationConfig {
+
+    private final paixel.modelo.UserRepository userRepository;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception
@@ -44,4 +45,5 @@ public class AplicationConfig {
         return username -> userRepository.findByUsername(username)
         .orElseThrow(()-> new UsernameNotFoundException("User not fournd"));
     }
+
 }

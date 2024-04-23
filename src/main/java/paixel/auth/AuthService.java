@@ -1,7 +1,5 @@
 package paixel.auth;
 
-import javax.management.relation.Role;
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import paixel.jwt.JwtService;
+import paixel.modelo.Role;
 import paixel.modelo.User;
 import paixel.modelo.UserRepository;
 
@@ -17,14 +16,14 @@ import paixel.modelo.UserRepository;
 @RequiredArgsConstructor
 public class AuthService {
 
-	private final UserRepository userRepository;
+    private final UserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
     public AuthReponse login(LoginRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        UserDetails userDetails=userRepository.findByUsername(request.getUsername()).orElseThrow();
+        UserDetails user=userRepository.findByUsername(request.getUsername()).orElseThrow();
         String token=jwtService.getToken(user);
         return AuthReponse.builder()
             .token(token)
@@ -46,4 +45,5 @@ public class AuthService {
             .build();
         
     }
+
 }

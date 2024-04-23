@@ -27,8 +27,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name="user", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
-public class User {
-	@Id
+public class User implements UserDetails {
+    @Id
     @GeneratedValue
     Integer id;
     @Basic
@@ -58,5 +58,4 @@ public class User {
     public boolean isEnabled() {
         return true;
     }
-
 }
