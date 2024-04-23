@@ -34,7 +34,9 @@ public class User implements UserDetails {
     @Basic
     @Column(nullable = false)
     String username;
-    String password;
+    String password; 
+    @Column(unique = true)
+    String email;
     @Enumerated(EnumType.STRING) 
     Role role;
 
