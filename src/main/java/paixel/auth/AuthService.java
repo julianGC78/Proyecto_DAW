@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import paixel.jwt.JwtService;
 import paixel.modelo.Role;
 import paixel.modelo.User;
-import paixel.modelo.UserRepository;
+import paixel.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
