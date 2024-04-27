@@ -10,11 +10,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
+import org.springframework.stereotype.Service;
 
 import paixel.modelo.Workshop;
 import paixel.repository.WorkshopRepository;
 import paixel.services.ServiceWorkshop;
-
+@Service
 public class ServiceWorkshopImpl implements ServiceWorkshop {
 	@Autowired
 	private WorkshopRepository workshopRepository;

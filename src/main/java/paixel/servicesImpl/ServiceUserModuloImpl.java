@@ -10,11 +10,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
+import org.springframework.stereotype.Service;
 
 import paixel.modelo.UsuarioModulo;
 import paixel.repository.UserModuloRepository;
 import paixel.services.ServiceUserModulo;
-
+@Service
 public class ServiceUserModuloImpl implements ServiceUserModulo {
 	@Autowired
 	private UserModuloRepository userModuloRepository;

@@ -1,6 +1,7 @@
 package paixel.servicesImpl;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -10,14 +11,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import paixel.modelo.User;
 import paixel.repository.UserRepository;
 import paixel.services.ServiceUser;
-
+@Service
 public class ServiceUserImpl implements ServiceUser {
 	@Autowired
 	private UserRepository userRepository;
+	
+	  @Autowired
+	    private PasswordEncoder passwordEncoder;
 
 	@Override
 	public Optional<User> findByUsername(String username) {
@@ -182,6 +188,22 @@ public class ServiceUserImpl implements ServiceUser {
 	public void deleteAll() {
 		userRepository.deleteAll();
 	}
+	
+	
+	public User updateUser(Integer id, User userUpdates) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (!userOptional.isPresent()) {
+            throw new NoSuchElementException("No se encontró el usuario con el ID: " + id);
+        }
+        User existingUser = userOptional.get();
+        
+        // Aquí asumimos que solo puedes actualizar username, password y email
+        existingUser.setUsername(userUpdates.getUsername());
+        //existingUser.setPassword(passwordEncoder.encode(userUpdates.getPassword()));
+        existingUser.setEmail(userUpdates.getEmail());
+        
+        return userRepository.save(existingUser);
+    }
 
 	
 

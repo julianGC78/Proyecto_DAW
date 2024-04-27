@@ -3,23 +3,25 @@ package paixel.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
-
 import paixel.modelo.User;
 import paixel.servicesImpl.ServiceUserImpl;
 
+@CrossOrigin(origins ="http://127.0.0.1:5500")
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioWS {
@@ -55,6 +57,7 @@ public class UsuarioWS {
 		return new ResponseEntity<User>(usuario, HttpStatus.OK);
 	}
 
+	
 	@GetMapping("/findAll")
 	public ResponseEntity<?> findAll() {
 		List<User> usuarios;
@@ -81,5 +84,22 @@ public class UsuarioWS {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody User userUpdates) {
+	    Map<String, Object> response = new HashMap<>();
+	    try {
+	        User updatedUser = serviceUserImpl.updateUser(id, userUpdates);
+	        response.put("user", updatedUser);
+	        response.put("message", "Usuario actualizado con éxito");
+	        return new ResponseEntity<>(response, HttpStatus.OK);
+	    } catch (NoSuchElementException e) {
+	        response.put("message", "No se encontró el usuario con el ID: " + id);
+	        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	    } catch (Exception e) {
+	        response.put("message", "Error al actualizar el usuario: " + e.getMessage());
+	        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
+
 
 }

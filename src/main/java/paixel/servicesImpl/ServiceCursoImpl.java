@@ -10,11 +10,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
+import org.springframework.stereotype.Service;
 
 import paixel.modelo.Curso;
 import paixel.repository.CursoRepository;
 import paixel.services.ServiceCurso;
-
+@Service
 public class ServiceCursoImpl implements ServiceCurso {
 	@Autowired 
 	private CursoRepository cursoRepository;

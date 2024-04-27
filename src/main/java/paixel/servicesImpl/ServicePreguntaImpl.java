@@ -10,11 +10,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
+import org.springframework.stereotype.Service;
 
 import paixel.modelo.Pregunta;
 import paixel.repository.PreguntaRepository;
 import paixel.services.ServicePregunta;
-
+@Service
 public class ServicePreguntaImpl implements ServicePregunta {
 
 	@Autowired
