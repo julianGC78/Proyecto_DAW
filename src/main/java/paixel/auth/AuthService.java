@@ -26,14 +26,16 @@ public class AuthService {
         UserDetails user=userRepository.findByUsername(request.getUsername()).orElseThrow();
         String token=jwtService.getToken(user);
         return AuthReponse.builder()
-            .token(token)
+            .token(token)           
             .build();
 
     }
 
     public AuthReponse register(RegisterRequest request) {
         User user = User.builder()
-            .username(request.getUsername())
+			.genero(request.getGenero()) 
+	        .username(request.getUsername())
+            .apellidos(request.getApellidos()) 
             .password(passwordEncoder.encode( request.getPassword()))
             .email(request.getEmail())
             .role(Role.USER)

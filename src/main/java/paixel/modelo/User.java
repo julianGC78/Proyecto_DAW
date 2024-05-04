@@ -35,9 +35,11 @@ public class User implements UserDetails {
     @Basic
     @Column(nullable = false)
     String username;
+    String apellidos;
     String password; 
     @Column(unique = true)
     String email;
+    String genero;
     @Enumerated(EnumType.STRING) 
     Role role;
 

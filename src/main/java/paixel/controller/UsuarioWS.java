@@ -4,10 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +45,23 @@ public class UsuarioWS {
 		}
 		return new ResponseEntity<User>(insertarUsuario, HttpStatus.OK);
 		 
+	}
+	
+	@GetMapping("/findById/{id}")
+	@PreAuthorize("#id == authentication.principal.id or hasAuthority('ROLE_ADMIN')")
+	public ResponseEntity<?> findByid(@PathVariable Integer id) {  
+		Optional<User> usuario;
+		try {
+			 usuario = serviceUserImpl.findById(id); // Asegúrate de pasar el id correctamente aquí
+		        if (!usuario.isPresent()) {
+		            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		        }
+		} catch (Exception e) {
+			response.put("message", "Error al buscar usuarios: " + e.getMessage());
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<>(usuario.get(), HttpStatus.OK);
+
 	}
 
 	@GetMapping("/findByEmail/{email}")
@@ -84,7 +103,9 @@ public class UsuarioWS {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
 	@PutMapping("/update/{id}")
+	@PreAuthorize("#id == authentication.principal.id or hasAuthority('ROLE_ADMIN')")
 	public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody User userUpdates) {
 	    Map<String, Object> response = new HashMap<>();
 	    try {
