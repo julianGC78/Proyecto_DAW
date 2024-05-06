@@ -191,19 +191,41 @@ public class ServiceUserImpl implements ServiceUser {
 	
 	
 	public User updateUser(Integer id, User userUpdates) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (!userOptional.isPresent()) {
-            throw new NoSuchElementException("No se encontró el usuario con el ID: " + id);
-        }
-        User existingUser = userOptional.get();
-        
-        // Aquí asumimos que solo puedes actualizar username, password y email
-        existingUser.setUsername(userUpdates.getUsername());
-        //existingUser.setPassword(passwordEncoder.encode(userUpdates.getPassword()));
-        existingUser.setEmail(userUpdates.getEmail());
-        
-        return userRepository.save(existingUser);
-    }
+	    Optional<User> userOptional = userRepository.findById(id);
+	    if (!userOptional.isPresent()) {
+	        throw new NoSuchElementException("No se encontró el usuario con el ID: " + id);
+	    }
+	    User existingUser = userOptional.get();
+	    
+	    System.out.println("Fecha de nacimiento recibida: " + userUpdates.getFechaNacimiento()); // Agregar esto para depurar
+	    
+	    if (userUpdates.getUsername() != null) {
+	        existingUser.setUsername(userUpdates.getUsername());
+	    }
+	   
+	    if (userUpdates.getEmail() != null) {
+	        existingUser.setEmail(userUpdates.getEmail());
+	    }
+
+	    if (userUpdates.getApellidos() != null) {
+	        existingUser.setApellidos(userUpdates.getApellidos());
+	    }
+	    if (userUpdates.getDni() != null) {
+	        existingUser.setDni(userUpdates.getDni());
+	    }
+	    if (userUpdates.getGenero() != null) {
+	        existingUser.setGenero(userUpdates.getGenero());
+	    }
+	    if (userUpdates.getFechaNacimiento() != null) {
+	        existingUser.setFechaNacimiento(userUpdates.getFechaNacimiento());
+	    }
+	    if (userUpdates.getLocalidad() != null) {
+	        existingUser.setLocalidad(userUpdates.getLocalidad());
+	    }
+
+	    return userRepository.save(existingUser);
+	}
+
 
 	
 

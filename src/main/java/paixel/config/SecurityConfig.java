@@ -33,7 +33,7 @@ public class SecurityConfig {
 				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(authRequest -> authRequest
 						.requestMatchers("/usuario/findAll").permitAll()
-						.requestMatchers("/usuario/update/**", "/usuario/delete/**").authenticated()
+						.requestMatchers("/usuario/update/**", "/usuario/delete/**").hasAuthority("USER")
 						.requestMatchers("/auth/**").permitAll().anyRequest().authenticated())
 				.sessionManagement(
 						sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -1,5 +1,7 @@
 package paixel.modelo;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -40,6 +42,10 @@ public class User implements UserDetails {
     @Column(unique = true)
     String email;
     String genero;
+    String dni;
+    @Column(name = "fecha_nacimiento", nullable = true)
+    LocalDate fechaNacimiento;
+    String localidad;
     @Enumerated(EnumType.STRING) 
     Role role;
 

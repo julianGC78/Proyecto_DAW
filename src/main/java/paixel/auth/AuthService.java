@@ -1,5 +1,6 @@
 package paixel.auth;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,6 +33,10 @@ public class AuthService {
     }
 
     public AuthReponse register(RegisterRequest request) {
+    	// Verificar si ya existe un usuario con el mismo email
+        if (userRepository.findByEmail(request.getEmail()).isPresent()){
+        	throw new CustomException("Error: El correo electrónico ya está en uso.", HttpStatus.BAD_REQUEST);
+        }
         User user = User.builder()
 			.genero(request.getGenero()) 
 	        .username(request.getUsername())
@@ -47,6 +52,19 @@ public class AuthService {
             .token(jwtService.getToken(user))
             .build();
         
+    }
+    
+    public class CustomException extends RuntimeException {
+        private HttpStatus httpStatus;
+
+        public CustomException(String message, HttpStatus httpStatus) {
+            super(message);
+            this.httpStatus = httpStatus;
+        }
+
+        public HttpStatus getHttpStatus() {
+            return httpStatus;
+        }
     }
 
 }

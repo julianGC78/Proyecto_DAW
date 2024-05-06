@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import paixel.jwt.JwtService;
 import paixel.modelo.User;
 import paixel.servicesImpl.ServiceUserImpl;
 
@@ -30,6 +31,8 @@ public class UsuarioWS {
 	
 	@Autowired
 	ServiceUserImpl serviceUserImpl;
+	@Autowired
+	JwtService jwtService;
 
 	Map<String, Object> response = new HashMap<String, Object>();
 	
@@ -92,6 +95,7 @@ public class UsuarioWS {
 
 	@DeleteMapping("delete/{id}")
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
+		 System.out.println("Intentando eliminar el usuario con ID: " + id);
 
 		try {
 			serviceUserImpl.deleteById(id);
@@ -99,18 +103,19 @@ public class UsuarioWS {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 
 		} catch (Exception e) {
-			response.put("messge", e.getMessage());
+			response.put("message", e.getMessage());
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
 	@PutMapping("/update/{id}")
-	@PreAuthorize("#id == authentication.principal.id or hasAuthority('ROLE_ADMIN')")
 	public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody User userUpdates) {
 	    Map<String, Object> response = new HashMap<>();
 	    try {
 	        User updatedUser = serviceUserImpl.updateUser(id, userUpdates);
+	        String newToken = jwtService.getToken(updatedUser); 
 	        response.put("user", updatedUser);
+	        response.put("newToken", newToken); 
 	        response.put("message", "Usuario actualizado con éxito");
 	        return new ResponseEntity<>(response, HttpStatus.OK);
 	    } catch (NoSuchElementException e) {
@@ -121,6 +126,7 @@ public class UsuarioWS {
 	        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	}
+
 
 
 }
