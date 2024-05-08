@@ -1,5 +1,6 @@
 package paixel.servicesImpl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
+import paixel.DTO.WorkshopDTO;
+import paixel.modelo.User;
 import paixel.modelo.Workshop;
 import paixel.repository.WorkshopRepository;
 import paixel.services.ServiceWorkshop;
@@ -174,6 +177,14 @@ public class ServiceWorkshopImpl implements ServiceWorkshop {
 	public void deleteAll() {
 		workshopRepository.deleteAll();
 	}
+	
+	private void createWorkshop(WorkshopRepository workshopRepository, User user, String contenido, String descripcion, LocalDateTime fecha) {
+	    if (workshopRepository.findByUsuarioAndFecha(user, fecha).isEmpty()) {
+	        Workshop newWorkshop = new Workshop(contenido, descripcion, fecha, user);
+	        workshopRepository.save(newWorkshop);
+	    }
+	}
+	
 	
 
 }

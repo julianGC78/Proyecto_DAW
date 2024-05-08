@@ -32,7 +32,7 @@ public class SecurityConfig {
 				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(authRequest -> authRequest
-						.requestMatchers("/usuario/findAll").permitAll()
+						.requestMatchers("/usuario/findAll","/workshop/findAll").permitAll()
 						.requestMatchers("/usuario/update/**", "/usuario/delete/**").hasAuthority("USER")
 						.requestMatchers("/auth/**").permitAll().anyRequest().authenticated())
 				.sessionManagement(

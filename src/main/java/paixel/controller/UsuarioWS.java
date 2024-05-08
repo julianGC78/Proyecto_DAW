@@ -51,7 +51,6 @@ public class UsuarioWS {
 	}
 	
 	@GetMapping("/findById/{id}")
-	@PreAuthorize("#id == authentication.principal.id or hasAuthority('ROLE_ADMIN')")
 	public ResponseEntity<?> findByid(@PathVariable Integer id) {  
 		Optional<User> usuario;
 		try {
@@ -69,14 +68,14 @@ public class UsuarioWS {
 
 	@GetMapping("/findByEmail/{email}")
 	public ResponseEntity<?> findByEmail(String email) {  
-		User usuario;
+		Optional<User> usuario;
 		try {
 		usuario = serviceUserImpl.findByEmail(email);
 		} catch (Exception e) {
 			response.put("message", "Error al buscar usuarios: " + e.getMessage());
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<User>(usuario, HttpStatus.OK);
+		return new ResponseEntity<User>(HttpStatus.OK);
 	}
 
 	

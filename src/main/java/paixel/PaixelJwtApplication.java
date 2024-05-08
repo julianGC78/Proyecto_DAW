@@ -1,7 +1,9 @@
 package paixel;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,7 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import paixel.modelo.Role;
 import paixel.modelo.User;
+import paixel.modelo.Workshop;
 import paixel.repository.UserRepository;
+import paixel.repository.WorkshopRepository;
+import paixel.servicesImpl.ServiceWorkshopImpl;
 
 @SpringBootApplication
 public class PaixelJwtApplication {
@@ -18,6 +23,9 @@ public class PaixelJwtApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PaixelJwtApplication.class, args);
 	}
+	
+	@Autowired
+	private ServiceWorkshopImpl serviceWorkshopImpl;
 
 	
 	 @Bean
@@ -56,4 +64,25 @@ public class PaixelJwtApplication {
 	            userRepository.save(newUser);
 	        }
 	    }
+	    @Bean
+	    CommandLineRunner initWorkshops(UserRepository userRepository, WorkshopRepository workshopRepository) {
+	        return args -> {
+	            LocalDateTime workshopDate = LocalDateTime.now(); // Ajusta la fecha según sea necesario
+	            String imageUrl = "http://127.0.0.1:5500/images/workshop/The_chameleon.webp"; // Asegúrate de que esta URL sea accesible
+
+	            userRepository.findByUsername("Juli").ifPresent(user -> {
+	                createWorkshop(workshopRepository, user, imageUrl, "Un taller intensivo sobre Spring Boot. Ver más detalles en ", workshopDate);
+	            });
+	        };
+	    }
+
+	    private void createWorkshop(WorkshopRepository workshopRepository, User user, String imageUrl, String descripcion, LocalDateTime fecha) {
+	        if (workshopRepository.findByUsuarioAndFecha(user, fecha).isEmpty()) {
+	            Workshop newWorkshop = new Workshop(imageUrl, descripcion, fecha, user);
+	            workshopRepository.save(newWorkshop);
+	        }
+	    }
+
+		
+		
 }
