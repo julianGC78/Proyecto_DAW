@@ -1,9 +1,11 @@
 package paixel.servicesImpl;
 
-import java.time.LocalDateTime;
+
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -14,7 +16,6 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.stereotype.Service;
 
 import paixel.DTO.WorkshopDTO;
-import paixel.modelo.User;
 import paixel.modelo.Workshop;
 import paixel.repository.WorkshopRepository;
 import paixel.services.ServiceWorkshop;
@@ -22,6 +23,7 @@ import paixel.services.ServiceWorkshop;
 public class ServiceWorkshopImpl implements ServiceWorkshop {
 	@Autowired
 	private WorkshopRepository workshopRepository;
+	
 
 	@Override
 	public <S extends Workshop> S save(S entity) {
@@ -178,13 +180,19 @@ public class ServiceWorkshopImpl implements ServiceWorkshop {
 		workshopRepository.deleteAll();
 	}
 	
-	private void createWorkshop(WorkshopRepository workshopRepository, User user, String contenido, String descripcion, LocalDateTime fecha) {
-	    if (workshopRepository.findByUsuarioAndFecha(user, fecha).isEmpty()) {
-	        Workshop newWorkshop = new Workshop(contenido, descripcion, fecha, user);
-	        workshopRepository.save(newWorkshop);
-	    }
-	}
 	
+	public List<WorkshopDTO> findAllWithUsernames() {
+	    List<Workshop> workshops = workshopRepository.findAllWithUsers(); // Usa el nuevo método con fetch join
+	    return workshops.stream()
+	                    .map(w -> new WorkshopDTO(
+	                    		w.getContenido(),
+	                    		w.getDescripcion(),
+	                    		w.getFecha(),
+	                    		w.getUsuario().getUsername(),
+	                    		w.getUsuario().getApellidos()))
+	                    .collect(Collectors.toList());
+	}
+
 	
 
 }

@@ -1,6 +1,6 @@
 package paixel.modelo;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,15 +25,15 @@ public class Workshop {
 	private int idworkshop;
 	private String contenido;
 	private String descripcion;
-	private LocalDateTime fecha;
+	private LocalDate fecha;
 	@ManyToOne
 	@JoinColumn(name = "idusuario")
 	private User usuario;
-	public Workshop(String contenido, String descripcion, LocalDateTime fecha, User usuario) {
+	public Workshop(String contenido, String descripcion, LocalDate fecha2, User usuario) {
 		super();
 		this.contenido = contenido;
 		this.descripcion = descripcion;
-		this.fecha = fecha;
+		this.fecha = fecha2;
 		this.usuario = usuario;
 	}
 

@@ -1,7 +1,7 @@
 package paixel;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -46,6 +46,7 @@ public class PaixelJwtApplication {
 	        return args -> {
 	            createUser(userRepository, passwordEncoder, "Juli", "Cueva", "juli@juli.com", "1234", "masculino", "12345678A", LocalDate.of(1990, 1, 1), "Madrid", Role.USER);
 	            createUser(userRepository, passwordEncoder, "May", "Lopez", "may@may.com", "1234", "femenino", "87654321B", LocalDate.of(1992, 2, 2), "Barcelona", Role.USER);
+	  
 	        };
 	    }
 
@@ -64,24 +65,24 @@ public class PaixelJwtApplication {
 	            userRepository.save(newUser);
 	        }
 	    }
-	    @Bean
-	    CommandLineRunner initWorkshops(UserRepository userRepository, WorkshopRepository workshopRepository) {
-	        return args -> {
-	            LocalDateTime workshopDate = LocalDateTime.now(); // Ajusta la fecha según sea necesario
-	            String imageUrl = "http://127.0.0.1:5500/images/workshop/The_chameleon.webp"; // Asegúrate de que esta URL sea accesible
-
-	            userRepository.findByUsername("Juli").ifPresent(user -> {
-	                createWorkshop(workshopRepository, user, imageUrl, "Un taller intensivo sobre Spring Boot. Ver más detalles en ", workshopDate);
-	            });
-	        };
-	    }
-
-	    private void createWorkshop(WorkshopRepository workshopRepository, User user, String imageUrl, String descripcion, LocalDateTime fecha) {
-	        if (workshopRepository.findByUsuarioAndFecha(user, fecha).isEmpty()) {
-	            Workshop newWorkshop = new Workshop(imageUrl, descripcion, fecha, user);
-	            workshopRepository.save(newWorkshop);
-	        }
-	    }
+//	    @Bean
+//	    CommandLineRunner initWorkshops(UserRepository userRepository, WorkshopRepository workshopRepository) {
+//	        return args -> {
+//	            LocalDate workshopDate = LocalDate.now(); // Ajusta la fecha según sea necesario
+//	            String imageUrl = "http://127.0.0.1:5500/images/workshop/The_chameleon.webp"; // Asegúrate de que esta URL sea accesible
+//
+//	            userRepository.findByUsername("Juli").ifPresent(user -> {
+//	                createWorkshop(workshopRepository, user, imageUrl, "Un taller intensivo sobre Spring Boot", workshopDate);
+//	            });
+//	        };
+//	    }
+//
+//	    private void createWorkshop(WorkshopRepository workshopRepository, User user, String imageUrl, String descripcion, LocalDate fecha) {
+//	        if (workshopRepository.findByUsuarioAndFecha(user, fecha).isEmpty()) {
+//	            Workshop newWorkshop = new Workshop(imageUrl, descripcion, fecha, user);
+//	            workshopRepository.save(newWorkshop);
+//	        }
+//	    }
 
 		
 		
