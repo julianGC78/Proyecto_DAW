@@ -26,20 +26,39 @@ public class SecurityConfig {
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	private final AuthenticationProvider authProvider;
 
+//	@Bean
+//	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//		return http
+//				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+//				.csrf(csrf -> csrf.disable())
+//				.authorizeHttpRequests(authRequest -> authRequest
+//						.requestMatchers("/usuario/findAll","/workshop/findAll","/curso/findAll").permitAll()
+//						.requestMatchers("/usuario/update/**", "/usuario/delete/**").hasAuthority("USER")
+//						.requestMatchers("/curso/findById/**").hasAuthority("USER") // Asegúrate de que la ruta esté correcta
+//						.requestMatchers("/auth/**").permitAll().anyRequest().authenticated())
+//				.sessionManagement(
+//						sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//				.authenticationProvider(authProvider)
+//				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class).build();
+//	}
+	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http
-				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-				.csrf(csrf -> csrf.disable())
-				.authorizeHttpRequests(authRequest -> authRequest
-						.requestMatchers("/usuario/findAll","/workshop/findAll").permitAll()
-						.requestMatchers("/usuario/update/**", "/usuario/delete/**").hasAuthority("USER")
-						.requestMatchers("/auth/**").permitAll().anyRequest().authenticated())
-				.sessionManagement(
-						sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authenticationProvider(authProvider)
-				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class).build();
+	    return http
+	            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+	            .csrf(csrf -> csrf.disable())
+	            .authorizeHttpRequests(authRequest -> authRequest
+	                    .requestMatchers("/usuario/findAll","/workshop/findAll","/curso/findAll", "/curso/findById/**","/usuarioCurso/findById/**","/usuarioCurso/findByUserIdAndCursoId/**").permitAll()  // Permitir acceso público a los detalles del curso
+	                    .requestMatchers("/matricula/pagar/**").permitAll()
+	                    .requestMatchers("/usuario/update/**", "/usuario/delete/**").hasAuthority("USER")
+	                    .requestMatchers("/auth/**").permitAll()
+	                    .anyRequest().authenticated())
+	            .sessionManagement(sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+	            .authenticationProvider(authProvider)
+	            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+	            .build();
 	}
+
 
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {

@@ -12,31 +12,32 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
-import paixel.modelo.UsuarioModulo;
+import paixel.modelo.UserModulo;
 import paixel.repository.UserModuloRepository;
 import paixel.services.ServiceUserModulo;
 @Service
 public class ServiceUserModuloImpl implements ServiceUserModulo {
+	
 	@Autowired
 	private UserModuloRepository userModuloRepository;
 
 	@Override
-	public <S extends UsuarioModulo> S save(S entity) {
+	public <S extends UserModulo> S save(S entity) {
 		return userModuloRepository.save(entity);
 	}
 
 	@Override
-	public <S extends UsuarioModulo> List<S> saveAll(Iterable<S> entities) {
+	public <S extends UserModulo> List<S> saveAll(Iterable<S> entities) {
 		return userModuloRepository.saveAll(entities);
 	}
 
 	@Override
-	public <S extends UsuarioModulo> Optional<S> findOne(Example<S> example) {
+	public <S extends UserModulo> Optional<S> findOne(Example<S> example) {
 		return userModuloRepository.findOne(example);
 	}
 
 	@Override
-	public List<UsuarioModulo> findAll(Sort sort) {
+	public List<UserModulo> findAll(Sort sort) {
 		return userModuloRepository.findAll(sort);
 	}
 
@@ -46,47 +47,47 @@ public class ServiceUserModuloImpl implements ServiceUserModulo {
 	}
 
 	@Override
-	public Page<UsuarioModulo> findAll(Pageable pageable) {
+	public Page<UserModulo> findAll(Pageable pageable) {
 		return userModuloRepository.findAll(pageable);
 	}
 
 	@Override
-	public <S extends UsuarioModulo> S saveAndFlush(S entity) {
+	public <S extends UserModulo> S saveAndFlush(S entity) {
 		return userModuloRepository.saveAndFlush(entity);
 	}
 
 	@Override
-	public <S extends UsuarioModulo> List<S> saveAllAndFlush(Iterable<S> entities) {
+	public <S extends UserModulo> List<S> saveAllAndFlush(Iterable<S> entities) {
 		return userModuloRepository.saveAllAndFlush(entities);
 	}
 
 	@Override
-	public List<UsuarioModulo> findAll() {
+	public List<UserModulo> findAll() {
 		return userModuloRepository.findAll();
 	}
 
 	@Override
-	public List<UsuarioModulo> findAllById(Iterable<Integer> ids) {
+	public List<UserModulo> findAllById(Iterable<Integer> ids) {
 		return userModuloRepository.findAllById(ids);
 	}
 
 	@Override
-	public void deleteInBatch(Iterable<UsuarioModulo> entities) {
+	public void deleteInBatch(Iterable<UserModulo> entities) {
 		userModuloRepository.deleteInBatch(entities);
 	}
 
 	@Override
-	public <S extends UsuarioModulo> Page<S> findAll(Example<S> example, Pageable pageable) {
+	public <S extends UserModulo> Page<S> findAll(Example<S> example, Pageable pageable) {
 		return userModuloRepository.findAll(example, pageable);
 	}
 
 	@Override
-	public Optional<UsuarioModulo> findById(Integer id) {
+	public Optional<UserModulo> findById(Integer id) {
 		return userModuloRepository.findById(id);
 	}
 
 	@Override
-	public void deleteAllInBatch(Iterable<UsuarioModulo> entities) {
+	public void deleteAllInBatch(Iterable<UserModulo> entities) {
 		userModuloRepository.deleteAllInBatch(entities);
 	}
 
@@ -101,12 +102,12 @@ public class ServiceUserModuloImpl implements ServiceUserModulo {
 	}
 
 	@Override
-	public <S extends UsuarioModulo> long count(Example<S> example) {
+	public <S extends UserModulo> long count(Example<S> example) {
 		return userModuloRepository.count(example);
 	}
 
 	@Override
-	public <S extends UsuarioModulo> boolean exists(Example<S> example) {
+	public <S extends UserModulo> boolean exists(Example<S> example) {
 		return userModuloRepository.exists(example);
 	}
 
@@ -116,12 +117,12 @@ public class ServiceUserModuloImpl implements ServiceUserModulo {
 	}
 
 	@Override
-	public UsuarioModulo getOne(Integer id) {
+	public UserModulo getOne(Integer id) {
 		return userModuloRepository.getOne(id);
 	}
 
 	@Override
-	public <S extends UsuarioModulo, R> R findBy(Example<S> example,
+	public <S extends UserModulo, R> R findBy(Example<S> example,
 			Function<FetchableFluentQuery<S>, R> queryFunction) {
 		return userModuloRepository.findBy(example, queryFunction);
 	}
@@ -137,17 +138,17 @@ public class ServiceUserModuloImpl implements ServiceUserModulo {
 	}
 
 	@Override
-	public UsuarioModulo getById(Integer id) {
+	public UserModulo getById(Integer id) {
 		return userModuloRepository.getById(id);
 	}
 
 	@Override
-	public void delete(UsuarioModulo entity) {
+	public void delete(UserModulo entity) {
 		userModuloRepository.delete(entity);
 	}
 
 	@Override
-	public UsuarioModulo getReferenceById(Integer id) {
+	public UserModulo getReferenceById(Integer id) {
 		return userModuloRepository.getReferenceById(id);
 	}
 
@@ -157,17 +158,17 @@ public class ServiceUserModuloImpl implements ServiceUserModulo {
 	}
 
 	@Override
-	public void deleteAll(Iterable<? extends UsuarioModulo> entities) {
+	public void deleteAll(Iterable<? extends UserModulo> entities) {
 		userModuloRepository.deleteAll(entities);
 	}
 
 	@Override
-	public <S extends UsuarioModulo> List<S> findAll(Example<S> example) {
+	public <S extends UserModulo> List<S> findAll(Example<S> example) {
 		return userModuloRepository.findAll(example);
 	}
 
 	@Override
-	public <S extends UsuarioModulo> List<S> findAll(Example<S> example, Sort sort) {
+	public <S extends UserModulo> List<S> findAll(Example<S> example, Sort sort) {
 		return userModuloRepository.findAll(example, sort);
 	}
 

@@ -12,12 +12,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
+import jakarta.persistence.EntityNotFoundException;
 import paixel.modelo.Matricula;
 import paixel.repository.MatriculaRepository;
 import paixel.services.ServiceMatricula;
+
 @Service
 public class ServiceMatriculaImpl implements ServiceMatricula {
-
+	
 	@Autowired
 	private MatriculaRepository matriculaRepository;
 
@@ -175,6 +177,14 @@ public class ServiceMatriculaImpl implements ServiceMatricula {
 	public void deleteAll() {
 		matriculaRepository.deleteAll();
 	}
+
+	public Optional<Matricula> findByUser_Iduser(Integer iduser) {
+		return matriculaRepository.findByUser_Iduser(iduser);
+	}
+
 	
 	
+	
+
+
 }

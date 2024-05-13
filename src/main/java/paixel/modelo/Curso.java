@@ -26,7 +26,9 @@ public class Curso {
 	private int idcurso;
 	@Column(unique = true)
 	private String titulo;
+	 @Column(length = 500) 
 	private String descripcion;
+	private String recurso;
 
 //	@OneToMany(mappedBy = "curso", cascade = CascadeType.REMOVE)
 //	private List<PreguntaVO> preguntausuarios;

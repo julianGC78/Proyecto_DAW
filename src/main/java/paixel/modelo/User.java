@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    Integer iduser;
     @Basic
     @Column(nullable = false)
     String username;
@@ -46,6 +46,7 @@ public class User implements UserDetails {
     @Column(name = "fecha_nacimiento", nullable = true)
     LocalDate fechaNacimiento;
     String localidad;
+    boolean matricula;
     @Enumerated(EnumType.STRING) 
     Role role;
 
