@@ -49,7 +49,7 @@ public class SecurityConfig {
 	            .csrf(csrf -> csrf.disable())
 	            .authorizeHttpRequests(authRequest -> authRequest
 	                    .requestMatchers("/usuario/findAll","/workshop/findAll","/curso/findAll", "/curso/findById/**","/usuarioCurso/findById/**","/usuarioCurso/findByUserIdAndCursoId/**").permitAll()  // Permitir acceso público a los detalles del curso
-	                    .requestMatchers("/matricula/pagar/**").permitAll()
+	                    .requestMatchers("/matricula/pagar/**").authenticated()
 	                    .requestMatchers("/usuario/update/**", "/usuario/delete/**").hasAuthority("USER")
 	                    .requestMatchers("/auth/**").permitAll()
 	                    .anyRequest().authenticated())

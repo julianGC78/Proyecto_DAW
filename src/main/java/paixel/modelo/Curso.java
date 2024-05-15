@@ -39,10 +39,15 @@ public class Curso {
 //	@OneToMany(mappedBy = "curso", cascade = CascadeType.REMOVE)
 //	private List<MatriculaVO> matriculausuario;
 
+	
+	
 	@ManyToOne
 	@JoinColumn(name = "idusuario")
 	private User user;
 	
+	@ManyToOne
+    @JoinColumn(name = "iddocente")
+    private Docente docente;
 	
 
 //	public CursoVO(String titulo, String descripcion, List<PreguntaVO> preguntausuarios, List<ModuloVO> modulo,

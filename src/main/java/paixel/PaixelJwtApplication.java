@@ -1,7 +1,7 @@
 package paixel;
 
 import java.time.LocalDate;
-
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -10,11 +10,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import paixel.modelo.Curso;
+import paixel.modelo.Docente;
+import paixel.modelo.Modulo;
 import paixel.modelo.Role;
 import paixel.modelo.User;
-import paixel.modelo.Workshop;
+import paixel.repository.CursoRepository;
+import paixel.repository.DocenteRepository;
+import paixel.repository.ModuloRepository;
 import paixel.repository.UserRepository;
-import paixel.repository.WorkshopRepository;
 import paixel.servicesImpl.ServiceWorkshopImpl;
 
 @SpringBootApplication
@@ -102,6 +106,43 @@ public class PaixelJwtApplication {
 //	        }
 //	    }
 
-		
+	    public class DataInitializer {
+
+	        @Bean
+	        public CommandLineRunner initData(DocenteRepository docenteRepository) {
+	            return args -> {
+	                // Crear docente 1: Miguel Ángel Rodríguez
+	                Docente docente1 = new Docente();
+	                docente1.setUsername("marodriguez");
+	                docente1.setEspecialidad("Animación y 3D");
+	                docente1.setDescripcion("Ingeniero en Diseño y Producción de Medios Audiovisuales. Formador en animación digital, modelado 3D y efectos visuales con más de 10 años de experiencia en la industria. Especialista en la creación de contenido animado para películas, videojuegos y aplicaciones multimedia.");
+	                docente1.setRecurso("http://127.0.0.1:5500/images/docentes/docenteBarba.webp");
+
+
+	                // Crear docente 2: Sofía Martínez
+	                Docente docente2 = new Docente();
+	                docente2.setUsername("smartinez");
+	                docente2.setEspecialidad("Diseño Gráfico");
+	                docente2.setDescripcion("Diseñadora Gráfica con un máster en Branding y Comunicación Visual. Más de 8 años de experiencia en la industria del diseño, trabajando con marcas internacionales para crear identidades visuales impactantes. Especialista en diseño gráfico, branding y creación de ilustraciones.");
+	                docente2.setRecurso("http://127.0.0.1:5500/images/docentes/docenteMujer.webp");
+
+	               
+	                // Crear docente 3: Carlos Hernández
+	                Docente docente3 = new Docente();
+	                docente3.setUsername("chernandez");
+	                docente3.setEspecialidad("UI/UX");
+	                docente3.setDescripcion("Ingeniero de Software con especialización en Diseño de Interfaces y Experiencia de Usuario. Más de 7 años de experiencia ayudando a startups y grandes empresas a mejorar la usabilidad y estética de sus productos digitales. Experto en herramientas de diseño como Figma y Adobe XD, así como en técnicas de composición visual y efectos.");
+	                docente3.setRecurso("http://127.0.0.1:5500/images/docentes/docente.webp");
+
+	               
+	                // Guardar los docentes (esto también guardará los cursos gracias a la cascada)
+	                docenteRepository.save(docente1);
+	                docenteRepository.save(docente2);
+	                docenteRepository.save(docente3);
+	            };
+	        }
+	    }
+	   
+	
 		
 }
