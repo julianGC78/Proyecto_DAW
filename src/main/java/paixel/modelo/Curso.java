@@ -24,10 +24,13 @@ public class Curso {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idcurso;
+	
 	@Column(unique = true)
 	private String titulo;
+	
 	 @Column(length = 500) 
 	private String descripcion;
+	 
 	private String recurso;
 
 //	@OneToMany(mappedBy = "curso", cascade = CascadeType.REMOVE)
@@ -39,8 +42,7 @@ public class Curso {
 //	@OneToMany(mappedBy = "curso", cascade = CascadeType.REMOVE)
 //	private List<MatriculaVO> matriculausuario;
 
-	
-	
+		
 	@ManyToOne
 	@JoinColumn(name = "idusuario")
 	private User user;

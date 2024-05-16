@@ -76,5 +76,7 @@ public interface ServiceModulo {
 	<S extends Modulo> List<S> findAll(Example<S> example, Sort sort);
 
 	void deleteAll();
+	
+	List<Modulo> findByCursoId(Integer idcurso);
 
 }

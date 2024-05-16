@@ -175,5 +175,23 @@ public class ServiceModuloImpl implements ServiceModulo {
 	public void deleteAll() {
 		moduloRepository.deleteAll();
 	}
+
+	public List<Modulo> findByCurso_Idcurso(Integer idcurso) {
+		return moduloRepository.findByCurso_Idcurso(idcurso);
+	}
+
+	@Override
+	public List<Modulo> findByCursoId(Integer idcurso) {
+		  return moduloRepository.findByCurso_Idcurso(idcurso);
+	}
+
+	public Optional<Modulo> findByTitulo(String titulo) {
+		return moduloRepository.findByTitulo(titulo);
+	}
+
 	
+	
+	
+	
+	  
 }
