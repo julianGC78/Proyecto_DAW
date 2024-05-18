@@ -187,73 +187,73 @@ public class PaixelJwtApplication {
             // Diseño Gráfico
             saveModuloIfNotExist(new Modulo("Fundamentos del Diseño Gráfico", "1H 5M", "Fundamentos del Diseño Gráfico.", "http://127.0.0.1:5500/video/video1.mp4", 1, Collections.emptyList(), cursoDG));
             saveModuloIfNotExist(new Modulo("Teoría del Color", "1H", "Teoría del Color en el diseño.", "http://127.0.0.1:5500/video/video2.mp4", 2, Collections.emptyList(), cursoDG));
-            saveModuloIfNotExist(new Modulo("Tipografía en el Diseño", "1H 5M", "Tipografía en el Diseño.", "http://127.0.0.1:5500/video/video2.mp4", 3, Collections.emptyList(), cursoDG));
-            saveModuloIfNotExist(new Modulo("Herramientas de Diseño Digital", "1H", "Herramientas de Diseño Digital.", "http://127.0.0.1:5500/video/video2.mp4", 4, Collections.emptyList(), cursoDG));
-            saveModuloIfNotExist(new Modulo("Técnicas de Composición", "1H 15M", "Técnicas de Composición.", "http://127.0.0.1:5500/video/video2.mp4", 5, Collections.emptyList(), cursoDG));
-            saveModuloIfNotExist(new Modulo("Proyectos de Diseño Práctico", "1H 20M", "Proyectos de Diseño Práctico.","http://127.0.0.1:5500/video/video2.mp4", 6, Collections.emptyList(), cursoDG));
+            saveModuloIfNotExist(new Modulo("Tipografía en el Diseño", "1H 5M", "Tipografía en el Diseño.", "http://127.0.0.1:5500/video/video3.mp4", 3, Collections.emptyList(), cursoDG));
+            saveModuloIfNotExist(new Modulo("Herramientas de Diseño Digital", "1H", "Herramientas de Diseño Digital.", "http://127.0.0.1:5500/video/video4.mp4", 4, Collections.emptyList(), cursoDG));
+            saveModuloIfNotExist(new Modulo("Técnicas de Composición", "1H 15M", "Técnicas de Composición.", "http://127.0.0.1:5500/video/video5.mp4", 5, Collections.emptyList(), cursoDG));
+            saveModuloIfNotExist(new Modulo("Proyectos de Diseño Práctico", "1H 20M", "Proyectos de Diseño Práctico.","http://127.0.0.1:5500/video/video6.mp4", 6, Collections.emptyList(), cursoDG));
 
             // Photoshop
             saveModuloIfNotExist(new Modulo("Introducción a Photoshop", "1H 5M", "Introducción a Photoshop.",  "http://127.0.0.1:5500/video/video1.mp4", 1, Collections.emptyList(), cursoPS));
             saveModuloIfNotExist(new Modulo("Herramientas Básicas de Edición", "1H 10M", "Herramientas Básicas de Edición en Photoshop.", "http://127.0.0.1:5500/video/video2.mp4", 2, Collections.emptyList(), cursoPS));
-            saveModuloIfNotExist(new Modulo("Capas y Máscaras", "1H 15M", "Uso de Capas y Máscaras en Photoshop.", "http://127.0.0.1:5500/video/video2.mp4", 3, Collections.emptyList(), cursoPS));
-            saveModuloIfNotExist(new Modulo("Retoque Fotográfico", "1H 20M", "Técnicas de Retoque Fotográfico en Photoshop.", "http://127.0.0.1:5500/video/video2.mp4", 4, Collections.emptyList(), cursoPS));
-            saveModuloIfNotExist(new Modulo("Efectos Especiales y Filtros", "1H 25M", "Efectos Especiales y Filtros en Photoshop.", "http://127.0.0.1:5500/video/video2.mp4", 5, Collections.emptyList(), cursoPS));
-            saveModuloIfNotExist(new Modulo("Proyectos Avanzados en Photoshop", "1H 30M", "Proyectos Avanzados en Photoshop.", "http://127.0.0.1:5500/video/video2.mp4", 6, Collections.emptyList(), cursoPS));
+            saveModuloIfNotExist(new Modulo("Capas y Máscaras", "1H 15M", "Uso de Capas y Máscaras en Photoshop.", "http://127.0.0.1:5500/video/video3.mp4", 3, Collections.emptyList(), cursoPS));
+            saveModuloIfNotExist(new Modulo("Retoque Fotográfico", "1H 20M", "Técnicas de Retoque Fotográfico en Photoshop.", "http://127.0.0.1:5500/video/video4.mp4", 4, Collections.emptyList(), cursoPS));
+            saveModuloIfNotExist(new Modulo("Efectos Especiales y Filtros", "1H 25M", "Efectos Especiales y Filtros en Photoshop.", "http://127.0.0.1:5500/video/video5.mp4", 5, Collections.emptyList(), cursoPS));
+            saveModuloIfNotExist(new Modulo("Proyectos Avanzados en Photoshop", "1H 30M", "Proyectos Avanzados en Photoshop.", "http://127.0.0.1:5500/video/video6.mp4", 6, Collections.emptyList(), cursoPS));
 
             // Desarrollo Web
             saveModuloIfNotExist(new Modulo("Fundamentos del Desarrollo Web", "1H 5M", "Fundamentos del Desarrollo Web.",  "http://127.0.0.1:5500/video/video1.mp4", 1, Collections.emptyList(), cursoDW));
             saveModuloIfNotExist(new Modulo("HTML y CSS Básico", "1H 10M", "HTML y CSS Básico.", "http://127.0.0.1:5500/video/video2.mp4", 2, Collections.emptyList(), cursoDW));
-            saveModuloIfNotExist(new Modulo("JavaScript para Principiantes", "1H 15M", "Introducción a JavaScript para Principiantes.", "http://127.0.0.1:5500/video/video2.mp4", 3, Collections.emptyList(), cursoDW));
-            saveModuloIfNotExist(new Modulo("Desarrollo Frontend con Frameworks", "1H 20M", "Desarrollo Frontend con Frameworks.", "http://127.0.0.1:5500/video/video2.mp4", 4, Collections.emptyList(), cursoDW));
-            saveModuloIfNotExist(new Modulo("Introducción al Backend", "1H 25M", "Introducción al Backend.", "http://127.0.0.1:5500/video/video2.mp4", 5, Collections.emptyList(), cursoDW));
-            saveModuloIfNotExist(new Modulo("Proyectos Completos de Desarrollo Web", "1H 30M", "Proyectos Completos de Desarrollo Web.", "http://127.0.0.1:5500/video/video2.mp4", 6, Collections.emptyList(), cursoDW));
+            saveModuloIfNotExist(new Modulo("JavaScript para Principiantes", "1H 15M", "Introducción a JavaScript para Principiantes.", "http://127.0.0.1:5500/video/video3.mp4", 3, Collections.emptyList(), cursoDW));
+            saveModuloIfNotExist(new Modulo("Desarrollo Frontend con Frameworks", "1H 20M", "Desarrollo Frontend con Frameworks.", "http://127.0.0.1:5500/video/video4.mp4", 4, Collections.emptyList(), cursoDW));
+            saveModuloIfNotExist(new Modulo("Introducción al Backend", "1H 25M", "Introducción al Backend.", "http://127.0.0.1:5500/video/video5.mp4", 5, Collections.emptyList(), cursoDW));
+            saveModuloIfNotExist(new Modulo("Proyectos Completos de Desarrollo Web", "1H 30M", "Proyectos Completos de Desarrollo Web.", "http://127.0.0.1:5500/video/video6.mp4", 6, Collections.emptyList(), cursoDW));
 
             // UI/UX
             saveModuloIfNotExist(new Modulo("Principios de Diseño UI/UX", "1H 10M", "Principios de Diseño UI/UX.",  "http://127.0.0.1:5500/video/video1.mp4", 1, Collections.emptyList(), cursoUIUX));
             saveModuloIfNotExist(new Modulo("Investigación de Usuarios", "1H 15M", "Investigación de Usuarios en Diseño UI/UX.", "http://127.0.0.1:5500/video/video2.mp4", 2, Collections.emptyList(), cursoUIUX));
-            saveModuloIfNotExist(new Modulo("Diseño de Interfaz de Usuario", "1H 20M", "Diseño de Interfaz de Usuario.", "http://127.0.0.1:5500/video/video2.mp4", 3, Collections.emptyList(), cursoUIUX));
-            saveModuloIfNotExist(new Modulo("Prototipado y Wireframing", "1H 25M", "Prototipado y Wireframing en Diseño UI/UX.", "http://127.0.0.1:5500/video/video2.mp4", 4, Collections.emptyList(), cursoUIUX));
-            saveModuloIfNotExist(new Modulo("Pruebas de Usabilidad", "1H 30M", "Pruebas de Usabilidad en Diseño UI/UX.", "http://127.0.0.1:5500/video/video2.mp4", 5, Collections.emptyList(), cursoUIUX));
-            saveModuloIfNotExist(new Modulo("Implementación y Feedback", "1H 35M", "Implementación y Feedback en Diseño UI/UX.", "http://127.0.0.1:5500/video/video2.mp4", 6, Collections.emptyList(), cursoUIUX));
+            saveModuloIfNotExist(new Modulo("Diseño de Interfaz de Usuario", "1H 20M", "Diseño de Interfaz de Usuario.", "http://127.0.0.1:5500/video/video3.mp4", 3, Collections.emptyList(), cursoUIUX));
+            saveModuloIfNotExist(new Modulo("Prototipado y Wireframing", "1H 25M", "Prototipado y Wireframing en Diseño UI/UX.", "http://127.0.0.1:5500/video/video4.mp4", 4, Collections.emptyList(), cursoUIUX));
+            saveModuloIfNotExist(new Modulo("Pruebas de Usabilidad", "1H 30M", "Pruebas de Usabilidad en Diseño UI/UX.", "http://127.0.0.1:5500/video/video5.mp4", 5, Collections.emptyList(), cursoUIUX));
+            saveModuloIfNotExist(new Modulo("Implementación y Feedback", "1H 35M", "Implementación y Feedback en Diseño UI/UX.", "http://127.0.0.1:5500/video/video6.mp4", 6, Collections.emptyList(), cursoUIUX));
 
             // Logotipos y Branding
             saveModuloIfNotExist(new Modulo("Introducción al Branding", "1H 5M", "Fundamentos del Branding.",  "http://127.0.0.1:5500/video/video1.mp4", 1, Collections.emptyList(), cursoLB));
             saveModuloIfNotExist(new Modulo("Creación de Logotipos", "1H 10M", "Creación de Logotipos Efectivos.", "http://127.0.0.1:5500/video/video2.mp4", 2, Collections.emptyList(), cursoLB));
-            saveModuloIfNotExist(new Modulo("Psicología del Color en Branding", "1H 15M", "Psicología del Color en Branding.", "http://127.0.0.1:5500/video/video2.mp4", 3, Collections.emptyList(), cursoLB));
-            saveModuloIfNotExist(new Modulo("Estrategia de Marca", "1H 20M", "Estrategia de Marca para el Éxito.", "http://127.0.0.1:5500/video/video2.mp4", 4, Collections.emptyList(), cursoLB));
-            saveModuloIfNotExist(new Modulo("Aplicaciones del Logotipo", "1H 25M", "Aplicaciones Prácticas del Logotipo.", "http://127.0.0.1:5500/video/video2.mp4", 5, Collections.emptyList(), cursoLB));
-            saveModuloIfNotExist(new Modulo("Proyectos de Branding", "1H 30M", "Proyectos Prácticos de Branding.", "http://127.0.0.1:5500/video/video2.mp4", 6, Collections.emptyList(), cursoLB));
+            saveModuloIfNotExist(new Modulo("Psicología del Color en Branding", "1H 15M", "Psicología del Color en Branding.", "http://127.0.0.1:5500/video/video3.mp4", 3, Collections.emptyList(), cursoLB));
+            saveModuloIfNotExist(new Modulo("Estrategia de Marca", "1H 20M", "Estrategia de Marca para el Éxito.", "http://127.0.0.1:5500/video/video4.mp4", 4, Collections.emptyList(), cursoLB));
+            saveModuloIfNotExist(new Modulo("Aplicaciones del Logotipo", "1H 25M", "Aplicaciones Prácticas del Logotipo.", "http://127.0.0.1:5500/video/video5.mp4", 5, Collections.emptyList(), cursoLB));
+            saveModuloIfNotExist(new Modulo("Proyectos de Branding", "1H 30M", "Proyectos Prácticos de Branding.", "http://127.0.0.1:5500/video/video6.mp4", 6, Collections.emptyList(), cursoLB));
 
             // Ilustración
             saveModuloIfNotExist(new Modulo("Fundamentos de la Ilustración", "1H 10M", "Fundamentos Básicos de la Ilustración.",  "http://127.0.0.1:5500/video/video1.mp4", 1, Collections.emptyList(), cursoIL));
             saveModuloIfNotExist(new Modulo("Técnicas de Dibujo", "1H 15M", "Técnicas Esenciales de Dibujo.", "http://127.0.0.1:5500/video/video2.mp4", 2, Collections.emptyList(), cursoIL));
-            saveModuloIfNotExist(new Modulo("Uso del Color en Ilustración", "1H 20M", "Aplicación del Color en Ilustración.", "http://127.0.0.1:5500/video/video2.mp4", 3, Collections.emptyList(), cursoIL));
-            saveModuloIfNotExist(new Modulo("Ilustración Digital", "1H 25M", "Técnicas de Ilustración Digital.", "http://127.0.0.1:5500/video/video2.mp4", 4, Collections.emptyList(), cursoIL));
-            saveModuloIfNotExist(new Modulo("Creación de Personajes", "1H 30M", "Métodos para Crear Personajes.", "http://127.0.0.1:5500/video/video2.mp4", 5, Collections.emptyList(), cursoIL));
-            saveModuloIfNotExist(new Modulo("Proyectos de Ilustración", "1H 35M", "Proyectos Prácticos de Ilustración.", "http://127.0.0.1:5500/video/video2.mp4", 6, Collections.emptyList(), cursoIL));
+            saveModuloIfNotExist(new Modulo("Uso del Color en Ilustración", "1H 20M", "Aplicación del Color en Ilustración.", "http://127.0.0.1:5500/video/video3.mp4", 3, Collections.emptyList(), cursoIL));
+            saveModuloIfNotExist(new Modulo("Ilustración Digital", "1H 25M", "Técnicas de Ilustración Digital.", "http://127.0.0.1:5500/video/video4.mp4", 4, Collections.emptyList(), cursoIL));
+            saveModuloIfNotExist(new Modulo("Creación de Personajes", "1H 30M", "Métodos para Crear Personajes.", "http://127.0.0.1:5500/video/video5.mp4", 5, Collections.emptyList(), cursoIL));
+            saveModuloIfNotExist(new Modulo("Proyectos de Ilustración", "1H 35M", "Proyectos Prácticos de Ilustración.", "http://127.0.0.1:5500/video/video6.mp4", 6, Collections.emptyList(), cursoIL));
 
             // 3D y Animación
             saveModuloIfNotExist(new Modulo("Introducción al 3D y Animación", "1H 5M", "Fundamentos del 3D y la Animación.",  "http://127.0.0.1:5500/video/video1.mp4", 1, Collections.emptyList(), curso3DA));
             saveModuloIfNotExist(new Modulo("Modelado 3D", "1H 10M", "Técnicas de Modelado 3D.", "http://127.0.0.1:5500/images/video/video2", 2, Collections.emptyList(), curso3DA));
-            saveModuloIfNotExist(new Modulo("Texturización y Materiales", "1H 15M", "Métodos de Texturización y Materiales.", "http://127.0.0.1:5500/video/video2.mp4", 3, Collections.emptyList(), curso3DA));
-            saveModuloIfNotExist(new Modulo("Rigging y Animación", "1H 20M", "Técnicas de Rigging y Animación.", "http://127.0.0.1:5500/video/video2.mp4", 4, Collections.emptyList(), curso3DA));
-            saveModuloIfNotExist(new Modulo("Iluminación y Renderizado", "1H 25M", "Métodos de Iluminación y Renderizado.", "http://127.0.0.1:5500/video/video2.mp4", 5, Collections.emptyList(), curso3DA));
-            saveModuloIfNotExist(new Modulo("Proyectos de Animación 3D", "1H 30M", "Proyectos Prácticos de Animación 3D.", "http://127.0.0.1:5500/video/video2.mp4", 6, Collections.emptyList(), curso3DA));
+            saveModuloIfNotExist(new Modulo("Texturización y Materiales", "1H 15M", "Métodos de Texturización y Materiales.", "http://127.0.0.1:5500/video/video3.mp4", 3, Collections.emptyList(), curso3DA));
+            saveModuloIfNotExist(new Modulo("Rigging y Animación", "1H 20M", "Técnicas de Rigging y Animación.", "http://127.0.0.1:5500/video/video4.mp4", 4, Collections.emptyList(), curso3DA));
+            saveModuloIfNotExist(new Modulo("Iluminación y Renderizado", "1H 25M", "Métodos de Iluminación y Renderizado.", "http://127.0.0.1:5500/video/video5.mp4", 5, Collections.emptyList(), curso3DA));
+            saveModuloIfNotExist(new Modulo("Proyectos de Animación 3D", "1H 30M", "Proyectos Prácticos de Animación 3D.", "http://127.0.0.1:5500/video/video6.mp4", 6, Collections.emptyList(), curso3DA));
 
             // Introducción a Figma
             saveModuloIfNotExist(new Modulo("Fundamentos de Figma", "1H", "Fundamentos del Uso de Figma.", "http://127.0.0.1:5500/video/video1.mp4", 1, Collections.emptyList(), cursoFigma));
             saveModuloIfNotExist(new Modulo("Creación de Diseños en Figma", "1H 5M", "Creación de Diseños Efectivos en Figma.", "http://127.0.0.1:5500/video/video2.mp4", 2, Collections.emptyList(), cursoFigma));
-            saveModuloIfNotExist(new Modulo("Colaboración en Figma", "1H 10M", "Métodos de Colaboración en Figma.", "http://127.0.0.1:5500/video/video2.mp4", 3, Collections.emptyList(), cursoFigma));
-            saveModuloIfNotExist(new Modulo("Prototipado Interactivo", "1H 15M", "Técnicas de Prototipado Interactivo en Figma.", "http://127.0.0.1:5500/video/video2.mp4", 4, Collections.emptyList(), cursoFigma));
-            saveModuloIfNotExist(new Modulo("Plugins y Extensiones", "1H 20M", "Uso de Plugins y Extensiones en Figma.", "http://127.0.0.1:5500/video/video2.mp4", 5, Collections.emptyList(), cursoFigma));
-            saveModuloIfNotExist(new Modulo("Proyectos Prácticos en Figma", "1H 25M", "Proyectos Prácticos en Figma.", "http://127.0.0.1:5500/video/video2.mp4", 6, Collections.emptyList(), cursoFigma));
+            saveModuloIfNotExist(new Modulo("Colaboración en Figma", "1H 10M", "Métodos de Colaboración en Figma.", "http://127.0.0.1:5500/video/video3.mp4", 3, Collections.emptyList(), cursoFigma));
+            saveModuloIfNotExist(new Modulo("Prototipado Interactivo", "1H 15M", "Técnicas de Prototipado Interactivo en Figma.", "http://127.0.0.1:5500/video/video4.mp4", 4, Collections.emptyList(), cursoFigma));
+            saveModuloIfNotExist(new Modulo("Plugins y Extensiones", "1H 20M", "Uso de Plugins y Extensiones en Figma.", "http://127.0.0.1:5500/video/video5.mp4", 5, Collections.emptyList(), cursoFigma));
+            saveModuloIfNotExist(new Modulo("Proyectos Prácticos en Figma", "1H 25M", "Proyectos Prácticos en Figma.", "http://127.0.0.1:5500/video/video6.mp4", 6, Collections.emptyList(), cursoFigma));
 
             // Composición y FX
             saveModuloIfNotExist(new Modulo("Introducción a la Composición", "1H 5M", "Fundamentos de la Composición.", "http://127.0.0.1:5500/video/video1.mp4", 1, Collections.emptyList(), cursoFX));
             saveModuloIfNotExist(new Modulo("Herramientas de Composición", "1H 10M", "Uso de Herramientas de Composición.", "http://127.0.0.1:5500/video/video2.mp4", 2, Collections.emptyList(), cursoFX));
-            saveModuloIfNotExist(new Modulo("Efectos Visuales Básicos", "1H 15M", "Aplicación de Efectos Visuales Básicos.", "http://127.0.0.1:5500/video/video2.mp4", 3, Collections.emptyList(), cursoFX));
-            saveModuloIfNotExist(new Modulo("Técnicas de Rotoscoping", "1H 20M", "Métodos de Rotoscoping.", "http://127.0.0.1:5500/video/video2.mp4", 4, Collections.emptyList(), cursoFX));
-            saveModuloIfNotExist(new Modulo("Integración de Efectos 3D", "1H 25M", "Integración de Efectos 3D en Composición.", "http://127.0.0.1:5500/video/video2.mp4", 5, Collections.emptyList(), cursoFX));
+            saveModuloIfNotExist(new Modulo("Efectos Visuales Básicos", "1H 15M", "Aplicación de Efectos Visuales Básicos.", "http://127.0.0.1:5500/video/video3.mp4", 3, Collections.emptyList(), cursoFX));
+            saveModuloIfNotExist(new Modulo("Técnicas de Rotoscoping", "1H 20M", "Métodos de Rotoscoping.", "http://127.0.0.1:5500/video/video4.mp4", 4, Collections.emptyList(), cursoFX));
+            saveModuloIfNotExist(new Modulo("Integración de Efectos 3D", "1H 25M", "Integración de Efectos 3D en Composición.", "http://127.0.0.1:5500/video/video5.mp4", 5, Collections.emptyList(), cursoFX));
         };
     }
 
