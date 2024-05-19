@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import paixel.modelo.Curso;
 import paixel.modelo.Modulo;
 import paixel.servicesImpl.ServiceModuloImpl;
+import paixel.servicesImpl.ServiceUserCursoImpl;
+import paixel.servicesImpl.ServiceUserModuloImpl;
 
 @CrossOrigin(origins = "http://127.0.0.1:5500")
 @RestController
@@ -28,6 +30,12 @@ public class ModuloWS {
 
 	@Autowired
 	ServiceModuloImpl serviceModuloImpl;
+	
+	 @Autowired
+	    ServiceUserModuloImpl serviceUsuarioModuloImpl;
+
+	    @Autowired
+	    ServiceUserCursoImpl serviceUsuarioCursoImpl;
 
 	Map<String, Object> response = new HashMap<String, Object>();
 
@@ -103,4 +111,29 @@ public class ModuloWS {
             return ResponseEntity.notFound().build();
         }
     }
+//    @PostMapping("/visto/{idmodulo}")
+//    public ResponseEntity<?> marcarModuloComoVisto(@PathVariable Integer idmodulo, @RequestBody Map<String, Object> payload) {
+//        Integer idusuario = (Integer) payload.get("idusuario");
+//
+//        try {
+//            // Actualizar el estado del módulo
+//            serviceUsuarioModuloImpl.marcarModuloComoVisto(idusuario, idmodulo);
+//
+//            // Verificar si todos los módulos del curso han sido vistos
+//            boolean todosVistos = serviceUsuarioModuloImpl.todosModulosVistos(idusuario, idmodulo);
+//            if (todosVistos) {
+//                serviceUsuarioCursoImpl.marcarCursoComoCompletado(idusuario, idmodulo);
+//            }
+//
+//            response.put("message", "Módulo marcado como visto");
+//            if (todosVistos) {
+//                response.put("curso", "Curso completado");
+//            }
+//
+//            return new ResponseEntity<>(response, HttpStatus.OK);
+//        } catch (Exception e) {
+//            response.put("message", "Error al marcar el módulo como visto: " + e.getMessage());
+//            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 }

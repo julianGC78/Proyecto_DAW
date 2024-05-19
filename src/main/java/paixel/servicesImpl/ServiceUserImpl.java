@@ -14,7 +14,9 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import paixel.modelo.User;
+import paixel.repository.MatriculaRepository;
 import paixel.repository.UserRepository;
 import paixel.services.ServiceUser;
 @Service
@@ -24,6 +26,9 @@ public class ServiceUserImpl implements ServiceUser {
 	
 	  @Autowired
 	    private PasswordEncoder passwordEncoder;
+	  
+	  @Autowired
+	    private MatriculaRepository matriculaRepository;
 
 	@Override
 	public Optional<User> findByUsername(String username) {
@@ -144,11 +149,7 @@ public class ServiceUserImpl implements ServiceUser {
 		return userRepository.count();
 	}
 
-	@Override
-	public void deleteById(Integer id) {
-		userRepository.deleteById(id);
-	}
-
+	
 	@Override
 	public User getById(Integer id) {
 		return userRepository.getById(id);
@@ -226,6 +227,14 @@ public class ServiceUserImpl implements ServiceUser {
 	    return userRepository.save(existingUser);
 	}
 
+	   @Transactional
+	    public void deleteById(Integer id) {
+	        // Primero, eliminar las matriculas asociadas al usuario.
+	        matriculaRepository.deleteByUserId(id);
+	        
+	        // Luego, eliminar el usuario.
+	        userRepository.deleteById(id);
+	    }
 
 	
 

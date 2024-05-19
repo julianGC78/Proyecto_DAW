@@ -1,20 +1,24 @@
 package paixel.servicesImpl;
 
-import java.awt.print.Pageable;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Sort;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
-import paixel.controller.UserCursoWS;
+import paixel.modelo.Curso;
+import paixel.modelo.Modulo;
+import paixel.modelo.User;
 import paixel.modelo.UserCurso;
+import paixel.repository.ModuloRepository;
 import paixel.repository.UserCursoRepository;
+import paixel.repository.UserModuloRepository;
+import paixel.repository.UserRepository;
 import paixel.services.ServiceUserCurso;
 
 @Service
@@ -22,6 +26,13 @@ public class ServiceUserCursoImpl  implements ServiceUserCurso{
 
 	@Autowired
 	private UserCursoRepository userCursoRepository;
+	  @Autowired
+	    private ModuloRepository moduloRepository;
+
+	    @Autowired
+	    private UserModuloRepository usuarioModuloRepository;
+	    @Autowired
+	    private UserRepository userRepository;
 
 	public <S extends UserCurso> S save(S entity) {
 		return userCursoRepository.save(entity);
@@ -153,7 +164,32 @@ public class ServiceUserCursoImpl  implements ServiceUserCurso{
         return userCursoRepository.findByUsuarioIduserAndCursoIdcurso(iduser, idcurso);
     }
 
-	
+//	 public void marcarCursoComoCompletado(Integer idusuario, Integer idmodulo) {
+//	        // Obtener el curso al que pertenece el módulo
+//	        Modulo modulo = moduloRepository.findById(idmodulo)
+//	                .orElseThrow(() -> new RuntimeException("Módulo no encontrado"));
+//	        Integer idcurso = modulo.getCurso().getIdcurso();
+//
+//	        // Obtener el usuario
+//	        User user = userRepository.findById(idusuario)
+//	                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+//
+//	        // Crear o actualizar la entrada en usuarios_cursos
+//	        UserCurso usuarioCurso = userCursoRepository.findByUsuarioAndCurso(user, modulo.getCurso());
+//	        if (usuarioCurso == null) {
+//	            usuarioCurso = new UserCurso();
+//	            usuarioCurso.setUsuario(user);
+//	            usuarioCurso.setCurso(modulo.getCurso());
+//	            usuarioCurso.setFecha(LocalDate.now());
+//	            usuarioCurso.setEstado("completado");
+//	            usuarioCurso.setDiploma(true);
+//	        } else {
+//	            usuarioCurso.setEstado("completado");
+//	            usuarioCurso.setDiploma(true);
+//	            usuarioCurso.setFecha(LocalDate.now());
+//	        }
+//	        userCursoRepository.save(usuarioCurso);
+//	    }
 
 	
 	

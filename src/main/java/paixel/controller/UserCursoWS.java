@@ -92,18 +92,20 @@ public class UserCursoWS {
 
 
 
-	@DeleteMapping("delete/{id}")
-	public ResponseEntity<?> delete(@PathVariable Integer id) {
-		 System.out.println("Intentando eliminar el usuario con ID: " + id);
+	 @DeleteMapping("delete/{id}")
+	 public ResponseEntity<?> delete(@PathVariable Integer id) {
+	     Map<String, Object> response = new HashMap<>();
+	     System.out.println("Intentando eliminar el usuario con ID: " + id);
 
-		try {
-			serviceUserCursoImpl.deleteById(id);
-			response.put("message", "El ususario se borro");
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+	     try {
+	         serviceUserCursoImpl.deleteById(id);
+	         response.put("message", "El usuario se borró");
+	         return new ResponseEntity<>(response, HttpStatus.OK);
 
-		} catch (Exception e) {
-			response.put("message", e.getMessage());
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+	     } catch (Exception e) {
+	         response.put("message", "Error al eliminar el usuario: " + e.getMessage());
+	         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	     }
+	 }
+
 }

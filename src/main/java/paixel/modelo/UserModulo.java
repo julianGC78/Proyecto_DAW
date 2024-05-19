@@ -30,9 +30,9 @@ public class UserModulo {
 	@ManyToOne
 	@JoinColumn(name = "idmodulo")
 	private Modulo modulo;
-	private String estado;
+	private boolean estado;
 	
-	public UserModulo(LocalDate fecha, User usuario, Modulo modulo, String estado) {
+	public UserModulo(LocalDate fecha, User usuario, Modulo modulo, Boolean estado) {
 		super();
 		this.fecha = fecha;
 		this.usuario = usuario;

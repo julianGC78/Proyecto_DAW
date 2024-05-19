@@ -1,5 +1,6 @@
 package paixel.servicesImpl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -12,14 +13,24 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
+import paixel.modelo.Modulo;
+import paixel.modelo.Modulo;
+import paixel.modelo.User;
 import paixel.modelo.UserModulo;
+import paixel.repository.ModuloRepository;
 import paixel.repository.UserModuloRepository;
+import paixel.repository.UserRepository;
 import paixel.services.ServiceUserModulo;
 @Service
 public class ServiceUserModuloImpl implements ServiceUserModulo {
 	
 	@Autowired
 	private UserModuloRepository userModuloRepository;
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private ModuloRepository moduloRepository;
+	
 
 	@Override
 	public <S extends UserModulo> S save(S entity) {
@@ -176,7 +187,33 @@ public class ServiceUserModuloImpl implements ServiceUserModulo {
 	public void deleteAll() {
 		userModuloRepository.deleteAll();
 	}
-	
-	
+
+//	   public void marcarModuloComoVisto(Integer idusuario, Integer idmodulo) {
+//	        User user = userRepository.findById(idusuario)
+//	                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+//	        Modulo modulo = moduloRepository.findById(idmodulo)
+//	                .orElseThrow(() -> new RuntimeException("Módulo no encontrado"));
+//
+//	        UserModulo usuarioModulo = userModuloRepository.findByUsuarioAndModulo(user, modulo);
+//	        if (usuarioModulo == null) {
+//	            usuarioModulo = new UserModulo();
+//	            usuarioModulo.setUsuario(user);
+//	            usuarioModulo.setModulo(modulo);
+//	            usuarioModulo.setEstado(true);
+//	            usuarioModulo.setFecha(LocalDate.now());
+//	        } else {
+//	            usuarioModulo.setEstado(true);
+//	            usuarioModulo.setFecha(LocalDate.now());
+//	        }
+//	        userModuloRepository.save(usuarioModulo);
+//	    }
+//
+//
+//	    public boolean todosModulosVistos(Integer idusuario, Integer idmodulo) {
+//	        List<UserModulo> modulos = userModuloRepository.findByIdusuarioAndIdcurso(idusuario, idmodulo);
+//	        return modulos.stream().allMatch(UserModulo::isEstado);
+//	    }
+//	
+	 
 
 }
