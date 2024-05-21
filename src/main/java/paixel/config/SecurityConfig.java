@@ -35,8 +35,9 @@ public class SecurityConfig {
 	            .authorizeHttpRequests(authRequest -> authRequest
 	                    .requestMatchers("/usuario/findAll", "/workshop/findAll", "/curso/findAll", "/curso/findById/**", "/usuarioCurso/findById/**", "/usuarioCurso/findByUserIdAndCursoId/**").permitAll()
 	                    .requestMatchers("/matricula/pagar/**", "/modulos/byCurso/**").authenticated()
-	                    .requestMatchers("/modulo/findById/**").permitAll() // Corregido aquí
-	                    .requestMatchers("/usuario/update/**", "/usuario/delete/**").hasAuthority("USER")
+	                    .requestMatchers("/modulo/findById/**").permitAll()
+	                    .requestMatchers("/usuario/update/**", "/usuario/delete/**").hasAnyAuthority("USER", "ADMIN")
+	                    .requestMatchers("/usuario/findById/**", "/docente/findAll/**","/workshop/findAll/**").hasAnyAuthority("USER", "ADMIN")
 	                    .requestMatchers("/auth/**").permitAll()
 	                    .anyRequest().authenticated())
 	            .sessionManagement(sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -44,6 +45,7 @@ public class SecurityConfig {
 	            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 	            .build();
 	}
+
 
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {

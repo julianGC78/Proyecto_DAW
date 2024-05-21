@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -63,7 +63,6 @@ public class UsuarioWS {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<>(usuario.get(), HttpStatus.OK);
-
 	}
 
 	@GetMapping("/findByEmail/{email}")
@@ -107,24 +106,52 @@ public class UsuarioWS {
 		}
 	}
 	
-	@PutMapping("/update/{id}")
-	public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody User userUpdates) {
-	    Map<String, Object> response = new HashMap<>();
-	    try {
-	        User updatedUser = serviceUserImpl.updateUser(id, userUpdates);
-	        String newToken = jwtService.getToken(updatedUser); 
-	        response.put("user", updatedUser);
-	        response.put("newToken", newToken); 
-	        response.put("message", "Usuario actualizado con éxito");
-	        return new ResponseEntity<>(response, HttpStatus.OK);
-	    } catch (NoSuchElementException e) {
-	        response.put("message", "No se encontró el usuario con el ID: " + id);
-	        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-	    } catch (Exception e) {
-	        response.put("message", "Error al actualizar el usuario: " + e.getMessage());
-	        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	@RestController
+	@RequestMapping("/usuario")
+	public class UserController {
+
+	    @Autowired
+	    private JwtService jwtService;
+
+	    @Autowired
+	    private ServiceUserImpl serviceUserImpl;
+
+	    @PutMapping("/update/{id}")
+	    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody User userUpdates, @RequestHeader("Authorization") String token) {
+	        Map<String, Object> response = new HashMap<>();
+	        try {
+	            // Obtener el nombre de usuario del token
+	            String username = jwtService.extractUsername(token.substring(7));
+	            User authenticatedUser = serviceUserImpl.findByUsername(username).orElseThrow(() -> new NoSuchElementException("Usuario no encontrado"));
+
+	            // Log para depuración
+	            System.out.println("Usuario autenticado: " + authenticatedUser.getUsername() + ", Rol: " + authenticatedUser.getRole());
+	            System.out.println("Intentando actualizar el usuario con ID: " + id);
+
+	            // Verificar si el usuario es ADMIN o si está actualizando su propio perfil
+	            if (!authenticatedUser.getRole().equals("ADMIN") && !authenticatedUser.getIduser().equals(id)) {
+	                response.put("message", "No tienes permiso para actualizar este perfil");
+	                return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+	            }
+
+	            User updatedUser = serviceUserImpl.updateUser(id, userUpdates);
+	            String newToken = jwtService.getToken(updatedUser);
+	            response.put("user", updatedUser);
+	            response.put("newToken", newToken);
+	            response.put("message", "Usuario actualizado con éxito");
+	            return new ResponseEntity<>(response, HttpStatus.OK);
+	        } catch (NoSuchElementException e) {
+	            response.put("message", "No se encontró el usuario con el ID: " + id);
+	            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	        } catch (Exception e) {
+	            response.put("message", "Error al actualizar el usuario: " + e.getMessage());
+	            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
 	    }
 	}
+
+
+
 
 
 

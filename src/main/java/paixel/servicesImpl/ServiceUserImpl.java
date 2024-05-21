@@ -221,7 +221,11 @@ public class ServiceUserImpl implements ServiceUser {
 	        existingUser.setFechaNacimiento(userUpdates.getFechaNacimiento());
 	    }
 	    if (userUpdates.getLocalidad() != null) {
-	        existingUser.setLocalidad(userUpdates.getLocalidad());
+	    	existingUser.setLocalidad(userUpdates.getLocalidad());
+	    }
+	    existingUser.setMatricula(userUpdates.isMatricula());
+	    if (userUpdates.getRole() != null) {
+	        existingUser.setRole(userUpdates.getRole());
 	    }
 
 	    return userRepository.save(existingUser);
