@@ -30,27 +30,26 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    return http
-	            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-	            .csrf(csrf -> csrf.disable())
-	            .authorizeHttpRequests(authRequest -> authRequest
-	                    .requestMatchers("/usuario/findAll", "/workshop/findAll", "/curso/findAll", "/curso/findById/**", "/usuarioCurso/findById/**", "/usuarioCurso/findByUserIdAndCursoId/**").permitAll()
-	                    .requestMatchers("/matricula/pagar/**", "/modulos/byCurso/**").authenticated()
-	                    .requestMatchers("/modulo/findById/**").permitAll()
-	                    .requestMatchers("/usuario/update/**", "/usuario/delete/**").hasAnyAuthority("USER", "ADMIN")
-	                    .requestMatchers("/usuario/findById/**", "/docente/findAll/**","/workshop/findAll/**").hasAnyAuthority("USER", "ADMIN")
-	                    .requestMatchers("/auth/**").permitAll()
-	                    .anyRequest().authenticated())
-	            .sessionManagement(sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-	            .authenticationProvider(authProvider)
-	            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-	            .build();
+	        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+	        .csrf(csrf -> csrf.disable())
+	        .authorizeHttpRequests(authRequest -> authRequest
+	            .requestMatchers("/usuario/findAll", "/workshop/findAll", "/curso/findAll", "/curso/findById/**", "/usuarioCurso/findById/**", "/usuarioCurso/findByUserIdAndCursoId/**").permitAll()
+	            .requestMatchers("/matricula/pagar/**", "/modulos/byCurso/**").authenticated()
+	            .requestMatchers("/modulo/findById/**").permitAll()
+	            .requestMatchers("/usuario/update/**", "/usuario/delete/**","/usuario/add/**").hasAnyAuthority("USER", "ADMIN")
+	            .requestMatchers("/usuario/findById/**", "/docente/findAll/**","/workshop/findAll/**").hasAnyAuthority("USER", "ADMIN")
+	            .requestMatchers("/auth/**").permitAll()
+	            .anyRequest().authenticated())
+	        .sessionManagement(sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+	        .authenticationProvider(authProvider)
+	        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+	        .build();
 	}
-
 
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 	    CorsConfiguration configuration = new CorsConfiguration();
-	    configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5500")); // Debes cambiar "*" por los orígenes específicos en producción
+	    configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5500")); // Cambia "*" por los orígenes específicos en producción
 	    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
 	    configuration.setAllowedHeaders(Arrays.asList("*"));
 	    configuration.setAllowCredentials(true);
@@ -59,6 +58,5 @@ public class SecurityConfig {
 	    source.registerCorsConfiguration("/**", configuration);
 	    return source;
 	}
-
 
 }

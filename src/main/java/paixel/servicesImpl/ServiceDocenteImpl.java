@@ -1,6 +1,7 @@
 package paixel.servicesImpl;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -176,5 +177,27 @@ public class ServiceDocenteImpl implements ServiceDocente {
 		docenteRepository.deleteAll();
 	}
 	
+	public Docente updateDocente(Integer id, Docente docenteUpdates) {
+        Optional<Docente> docenteOptional = docenteRepository.findById(id);
+        if (!docenteOptional.isPresent()) {
+            throw new NoSuchElementException("No se encontró el docente con el ID: " + id);
+        }
+        Docente existingDocente = docenteOptional.get();
+
+        if (docenteUpdates.getUsername() != null) {
+            existingDocente.setUsername(docenteUpdates.getUsername());
+        }
+        if (docenteUpdates.getEspecialidad() != null) {
+            existingDocente.setEspecialidad(docenteUpdates.getEspecialidad());
+        }
+        if (docenteUpdates.getDescripcion() != null) {
+            existingDocente.setDescripcion(docenteUpdates.getDescripcion());
+        }
+        if (docenteUpdates.getRecurso() != null) {
+            existingDocente.setRecurso(docenteUpdates.getRecurso());
+        }
+
+        return docenteRepository.save(existingDocente);
+    }
 
 }

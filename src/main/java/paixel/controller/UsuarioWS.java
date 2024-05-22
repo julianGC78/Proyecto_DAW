@@ -120,19 +120,6 @@ public class UsuarioWS {
 	    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody User userUpdates, @RequestHeader("Authorization") String token) {
 	        Map<String, Object> response = new HashMap<>();
 	        try {
-	            // Obtener el nombre de usuario del token
-	            String username = jwtService.extractUsername(token.substring(7));
-	            User authenticatedUser = serviceUserImpl.findByUsername(username).orElseThrow(() -> new NoSuchElementException("Usuario no encontrado"));
-
-	            // Log para depuración
-	            System.out.println("Usuario autenticado: " + authenticatedUser.getUsername() + ", Rol: " + authenticatedUser.getRole());
-	            System.out.println("Intentando actualizar el usuario con ID: " + id);
-
-	            // Verificar si el usuario es ADMIN o si está actualizando su propio perfil
-	            if (!authenticatedUser.getRole().equals("ADMIN") && !authenticatedUser.getIduser().equals(id)) {
-	                response.put("message", "No tienes permiso para actualizar este perfil");
-	                return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-	            }
 
 	            User updatedUser = serviceUserImpl.updateUser(id, userUpdates);
 	            String newToken = jwtService.getToken(updatedUser);
@@ -148,11 +135,8 @@ public class UsuarioWS {
 	            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	        }
 	    }
+
+
 	}
-
-
-
-
-
 
 }

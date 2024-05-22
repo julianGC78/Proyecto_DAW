@@ -3,6 +3,7 @@ package paixel.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import paixel.jwt.JwtService;
 import paixel.modelo.Docente;
-import paixel.modelo.User;
 import paixel.servicesImpl.ServiceDocenteImpl;
 
 @CrossOrigin(origins ="http://127.0.0.1:5500")
@@ -89,4 +92,25 @@ public class DocenteWS {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	 @Autowired
+	    private JwtService jwtService;
+
+	    @PutMapping("/update/{id}")
+	    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Docente docenteUpdates, @RequestHeader("Authorization") String token) {
+	        Map<String, Object> response = new HashMap<>();
+	        try {
+	            Docente updatedDocente = serviceDocenteImpl.updateDocente(id, docenteUpdates);
+	            
+	            response.put("docente", updatedDocente);
+	          
+	            response.put("message", "Docente actualizado con éxito");
+	            return new ResponseEntity<>(response, HttpStatus.OK);
+	        } catch (NoSuchElementException e) {
+	            response.put("message", "No se encontró el docente con el ID: " + id);
+	            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	        } catch (Exception e) {
+	            response.put("message", "Error al actualizar el docente: " + e.getMessage());
+	            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
+	    }
 }
