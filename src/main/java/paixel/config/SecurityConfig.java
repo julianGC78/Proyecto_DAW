@@ -37,7 +37,7 @@ public class SecurityConfig {
 	            .requestMatchers("/matricula/pagar/**", "/modulos/byCurso/**").authenticated()
 	            .requestMatchers("/modulo/findById/**").permitAll()
 	            .requestMatchers("/usuario/update/**", "/usuario/delete/**","/usuario/add/**").hasAnyAuthority("USER", "ADMIN")
-	            .requestMatchers("/usuario/findById/**", "/docente/findAll/**","/workshop/findAll/**").hasAnyAuthority("USER", "ADMIN")
+	            .requestMatchers("/usuario/findById/**", "/docente/findAll/**","/docente/delete/**","/workshop/findAll/**").hasAnyAuthority("USER", "ADMIN")
 	            .requestMatchers("/auth/**").permitAll()
 	            .anyRequest().authenticated())
 	        .sessionManagement(sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
