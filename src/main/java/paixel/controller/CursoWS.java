@@ -3,6 +3,7 @@ package paixel.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -130,5 +133,46 @@ public class CursoWS {
 		}
 		return new ResponseEntity<>(curso.get(), HttpStatus.OK);
 	}
+	
+	@PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Map<String, Object> cursoData, @RequestHeader("Authorization") String token) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Curso cursoUpdates = new Curso();
+            
+            if (cursoData.get("titulo") != null) {
+                cursoUpdates.setTitulo((String) cursoData.get("titulo"));
+            }
+            if (cursoData.get("descripcion") != null) {
+                cursoUpdates.setDescripcion((String) cursoData.get("descripcion"));
+            }
+            if (cursoData.get("recurso") != null) {
+                cursoUpdates.setRecurso((String) cursoData.get("recurso"));
+            }
+            if (cursoData.get("idusuario") != null) {
+                Integer idUsuario = Integer.parseInt((String) cursoData.get("idusuario"));
+                User user = new User();
+                user.setIduser(idUsuario);
+                cursoUpdates.setUser(user);
+            }
+            if (cursoData.get("iddocente") != null) {
+                Integer idDocente = Integer.parseInt((String) cursoData.get("iddocente"));
+                Docente docente = new Docente();
+                docente.setIddocente(idDocente);
+                cursoUpdates.setDocente(docente);
+            }
+
+            Curso updatedCurso = serviceCursoImpl.updateCurso(id, cursoUpdates);
+            response.put("curso", updatedCurso);
+            response.put("message", "Curso actualizado con éxito");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            response.put("message", "No se encontró el curso con el ID: " + id);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            response.put("message", "Error al actualizar el curso: " + e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }

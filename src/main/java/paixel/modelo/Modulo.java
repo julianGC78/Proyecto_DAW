@@ -31,7 +31,7 @@ public class Modulo {
 	private String tiempo;
 	private String descripcion;
 	private String recurso;
-	private int orden;
+	private Integer orden;
 	
 	@OneToMany(mappedBy = "modulo", cascade = CascadeType.REMOVE)
 	private List<UserModulo> usuario;

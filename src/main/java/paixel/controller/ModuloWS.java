@@ -3,6 +3,7 @@ package paixel.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,8 +24,6 @@ import paixel.modelo.Curso;
 import paixel.modelo.Modulo;
 import paixel.servicesImpl.ServiceCursoImpl;
 import paixel.servicesImpl.ServiceModuloImpl;
-import paixel.servicesImpl.ServiceUserCursoImpl;
-import paixel.servicesImpl.ServiceUserModuloImpl;
 
 @CrossOrigin(origins = "http://127.0.0.1:5500")
 @RestController
@@ -135,6 +136,49 @@ public class ModuloWS {
             return ResponseEntity.notFound().build();
         }
     }
+    
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Map<String, Object> moduloData, @RequestHeader("Authorization") String token) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Modulo moduloUpdates = new Modulo();
+
+            if (moduloData.get("titulo") != null) {
+                moduloUpdates.setTitulo((String) moduloData.get("titulo"));
+            }
+            if (moduloData.get("tiempo") != null) {
+                moduloUpdates.setTiempo((String) moduloData.get("tiempo"));
+            }
+            if (moduloData.get("descripcion") != null) {
+                moduloUpdates.setDescripcion((String) moduloData.get("descripcion"));
+            }
+            if (moduloData.get("recurso") != null) {
+                moduloUpdates.setRecurso((String) moduloData.get("recurso"));
+            }
+            if (moduloData.get("orden") != null) {
+                moduloUpdates.setOrden(Integer.parseInt((String) moduloData.get("orden")));
+            }
+            if (moduloData.get("idcurso") != null) {
+                Integer idCurso = Integer.parseInt((String) moduloData.get("idcurso"));
+                Curso curso = new Curso();
+                curso.setIdcurso(idCurso);
+                moduloUpdates.setCurso(curso);
+            }
+
+            Modulo updatedModulo = serviceModuloImpl.updateModulo(id, moduloUpdates);
+            response.put("modulo", updatedModulo);
+            response.put("message", "Modulo actualizado con éxito");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            response.put("message", "No se encontró el modulo con el ID: " + id);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            response.put("message", "Error al actualizar el modulo: " + e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    
 //    @PostMapping("/visto/{idmodulo}")
 //    public ResponseEntity<?> marcarModuloComoVisto(@PathVariable Integer idmodulo, @RequestBody Map<String, Object> payload) {
 //        Integer idusuario = (Integer) payload.get("idusuario");

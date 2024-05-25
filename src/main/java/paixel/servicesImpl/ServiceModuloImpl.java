@@ -1,6 +1,7 @@
 package paixel.servicesImpl;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -12,7 +13,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
+import paixel.modelo.Curso;
 import paixel.modelo.Modulo;
+import paixel.repository.CursoRepository;
 import paixel.repository.ModuloRepository;
 import paixel.services.ServiceModulo;
 @Service
@@ -20,6 +23,9 @@ public class ServiceModuloImpl implements ServiceModulo {
 
 	@Autowired
 	private ModuloRepository moduloRepository;
+	
+	@Autowired
+	private CursoRepository cursoRepository;
 
 	@Override
 	public <S extends Modulo> S save(S entity) {
@@ -189,7 +195,36 @@ public class ServiceModuloImpl implements ServiceModulo {
 		return moduloRepository.findByTitulo(titulo);
 	}
 
-	
+	public Modulo updateModulo(Integer id, Modulo moduloUpdates) {
+        Optional<Modulo> moduloOptional = moduloRepository.findById(id);
+        if (!moduloOptional.isPresent()) {
+            throw new NoSuchElementException("No se encontró el modulo con el ID: " + id);
+        }
+        Modulo existingModulo = moduloOptional.get();
+
+        if (moduloUpdates.getTitulo() != null) {
+            existingModulo.setTitulo(moduloUpdates.getTitulo());
+        }
+        if (moduloUpdates.getTiempo() != null) {
+            existingModulo.setTiempo(moduloUpdates.getTiempo());
+        }
+        if (moduloUpdates.getDescripcion() != null) {
+            existingModulo.setDescripcion(moduloUpdates.getDescripcion());
+        }
+        if (moduloUpdates.getRecurso() != null) {
+            existingModulo.setRecurso(moduloUpdates.getRecurso());
+        }
+        if (moduloUpdates.getOrden() != null) {
+            existingModulo.setOrden(moduloUpdates.getOrden());
+        }
+        if (moduloUpdates.getCurso() != null) {
+            Curso curso = cursoRepository.findById(moduloUpdates.getCurso().getIdcurso())
+                .orElseThrow(() -> new NoSuchElementException("Curso no encontrado"));
+            existingModulo.setCurso(curso);
+        }
+
+        return moduloRepository.save(existingModulo);
+    }
 	
 	
 	

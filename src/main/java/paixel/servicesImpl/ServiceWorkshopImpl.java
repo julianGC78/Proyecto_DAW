@@ -2,8 +2,8 @@ package paixel.servicesImpl;
 
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.time.LocalDate;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -16,7 +16,9 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.stereotype.Service;
 
 import paixel.DTO.WorkshopDTO;
+import paixel.modelo.User;
 import paixel.modelo.Workshop;
+import paixel.repository.UserRepository;
 import paixel.repository.WorkshopRepository;
 import paixel.services.ServiceWorkshop;
 @Service
@@ -192,6 +194,34 @@ public class ServiceWorkshopImpl implements ServiceWorkshop {
 	                    		w.getUsuario().getApellidos()))
 	                    .collect(Collectors.toList());
 	}
+	
+	 @Autowired
+	    private UserRepository userRepository;
+	
+	public Workshop updateWorkshop(Integer id, Workshop workshopUpdates) {
+        Optional<Workshop> workshopOptional = workshopRepository.findById(id);
+        if (!workshopOptional.isPresent()) {
+            throw new NoSuchElementException("No se encontró el workshop con el ID: " + id);
+        }
+        Workshop existingWorkshop = workshopOptional.get();
+
+        if (workshopUpdates.getContenido() != null) {
+            existingWorkshop.setContenido(workshopUpdates.getContenido());
+        }
+        if (workshopUpdates.getDescripcion() != null) {
+            existingWorkshop.setDescripcion(workshopUpdates.getDescripcion());
+        }
+        if (workshopUpdates.getFecha() != null) {
+            existingWorkshop.setFecha(workshopUpdates.getFecha());
+        }
+        if (workshopUpdates.getUsuario() != null) {
+            User user = userRepository.findById(workshopUpdates.getUsuario().getIduser())
+                .orElseThrow(() -> new NoSuchElementException("Usuario no encontrado"));
+            existingWorkshop.setUsuario(user);
+        }
+
+        return workshopRepository.save(existingWorkshop);
+    }
 
 	
 

@@ -1,6 +1,7 @@
 package paixel.servicesImpl;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -13,7 +14,11 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.stereotype.Service;
 
 import paixel.modelo.Curso;
+import paixel.modelo.Docente;
+import paixel.modelo.User;
 import paixel.repository.CursoRepository;
+import paixel.repository.DocenteRepository;
+import paixel.repository.UserRepository;
 import paixel.services.ServiceCurso;
 @Service
 public class ServiceCursoImpl implements ServiceCurso {
@@ -175,6 +180,42 @@ public class ServiceCursoImpl implements ServiceCurso {
 		cursoRepository.deleteAll();
 	}
 	
+	
+	 @Autowired
+	    private UserRepository userRepository;
+
+	    @Autowired
+	    private DocenteRepository docenteRepository;
+	    
+	  public Curso updateCurso(Integer id, Curso cursoUpdates) {
+	        Optional<Curso> cursoOptional = cursoRepository.findById(id);
+	        if (!cursoOptional.isPresent()) {
+	            throw new NoSuchElementException("No se encontró el curso con el ID: " + id);
+	        }
+	        Curso existingCurso = cursoOptional.get();
+
+	        if (cursoUpdates.getTitulo() != null) {
+	            existingCurso.setTitulo(cursoUpdates.getTitulo());
+	        }
+	        if (cursoUpdates.getDescripcion() != null) {
+	            existingCurso.setDescripcion(cursoUpdates.getDescripcion());
+	        }
+	        if (cursoUpdates.getRecurso() != null) {
+	            existingCurso.setRecurso(cursoUpdates.getRecurso());
+	        }
+	        if (cursoUpdates.getUser() != null) {
+	            User user = userRepository.findById(cursoUpdates.getUser().getIduser())
+	                .orElseThrow(() -> new NoSuchElementException("Usuario no encontrado"));
+	            existingCurso.setUser(user);
+	        }
+	        if (cursoUpdates.getDocente() != null) {
+	            Docente docente = docenteRepository.findById(cursoUpdates.getDocente().getIddocente())
+	                .orElseThrow(() -> new NoSuchElementException("Docente no encontrado"));
+	            existingCurso.setDocente(docente);
+	        }
+
+	        return cursoRepository.save(existingCurso);
+	    }
 	
 
 }

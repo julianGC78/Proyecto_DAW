@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +15,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import paixel.modelo.User;
 import paixel.modelo.Workshop;
-import paixel.services.ServiceUser;
 import paixel.servicesImpl.ServiceUserImpl;
 import paixel.servicesImpl.ServiceWorkshopImpl;
 
@@ -112,4 +114,39 @@ public class WorkshopWS {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	 @PutMapping("/update/{id}")
+	    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Map<String, Object> workshopData, @RequestHeader("Authorization") String token) {
+	        Map<String, Object> response = new HashMap<>();
+	        try {
+	            Workshop workshopUpdates = new Workshop();
+
+	            if (workshopData.get("contenido") != null) {
+	                workshopUpdates.setContenido((String) workshopData.get("contenido"));
+	            }
+	            if (workshopData.get("descripcion") != null) {
+	                workshopUpdates.setDescripcion((String) workshopData.get("descripcion"));
+	            }
+	            if (workshopData.get("fecha") != null) {
+	                workshopUpdates.setFecha(LocalDate.parse((String) workshopData.get("fecha")));
+	            }
+	            if (workshopData.get("idusuario") != null) {
+	                Integer idUsuario = Integer.parseInt((String) workshopData.get("idusuario"));
+	                User user = new User();
+	                user.setIduser(idUsuario);
+	                workshopUpdates.setUsuario(user);
+	            }
+
+	            Workshop updatedWorkshop = serviceWorkshopImpl.updateWorkshop(id, workshopUpdates);
+	            response.put("workshop", updatedWorkshop);
+	            response.put("message", "Workshop actualizado con éxito");
+	            return new ResponseEntity<>(response, HttpStatus.OK);
+	        } catch (NoSuchElementException e) {
+	            response.put("message", "No se encontró el workshop con el ID: " + id);
+	            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	        } catch (Exception e) {
+	            response.put("message", "Error al actualizar el workshop: " + e.getMessage());
+	            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
+	    }
 }
