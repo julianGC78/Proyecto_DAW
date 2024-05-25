@@ -32,17 +32,7 @@ public class Curso {
 	private String descripcion;
 	 
 	private String recurso;
-
-//	@OneToMany(mappedBy = "curso", cascade = CascadeType.REMOVE)
-//	private List<PreguntaVO> preguntausuarios;
-//
-//	@OneToMany(mappedBy = "curso", cascade = CascadeType.REMOVE)
-//	private List<ModuloVO> modulo;
-//
-//	@OneToMany(mappedBy = "curso", cascade = CascadeType.REMOVE)
-//	private List<MatriculaVO> matriculausuario;
-
-		
+	
 	@ManyToOne
 	@JoinColumn(name = "idusuario")
 	private User user;
@@ -51,6 +41,14 @@ public class Curso {
     @JoinColumn(name = "iddocente")
     private Docente docente;
 	
+//	@OneToMany(mappedBy = "curso", cascade = CascadeType.REMOVE)
+//	private List<PreguntaVO> preguntausuarios;
+//
+//	@OneToMany(mappedBy = "curso", cascade = CascadeType.REMOVE)
+//	private List<ModuloVO> modulo;
+//
+//	@OneToMany(mappedBy = "curso", cascade = CascadeType.REMOVE)
+//	private List<MatriculaVO> matriculausuario;
 
 //	public CursoVO(String titulo, String descripcion, List<PreguntaVO> preguntausuarios, List<ModuloVO> modulo,
 //			List<MatriculaVO> matriculausuario, UsuarioVO usuario) {

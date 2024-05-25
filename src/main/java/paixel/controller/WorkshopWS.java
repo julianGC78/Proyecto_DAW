@@ -1,5 +1,6 @@
 package paixel.controller;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import paixel.modelo.User;
 import paixel.modelo.Workshop;
+import paixel.services.ServiceUser;
+import paixel.servicesImpl.ServiceUserImpl;
 import paixel.servicesImpl.ServiceWorkshopImpl;
 
 @CrossOrigin(origins ="http://127.0.0.1:5500")
@@ -28,20 +31,45 @@ public class WorkshopWS {
 	@Autowired
 	private ServiceWorkshopImpl serviceWorkshopImpl;
 	
+	@Autowired
+	private ServiceUserImpl serviceUserImpl;
+	
 	Map<String, Object> response = new HashMap<String, Object>();
 	
+//	@PostMapping("/add")
+//	public ResponseEntity<?> insert(@RequestBody Workshop workshop) {
+//		Workshop insertarWorkshop;
+//
+//		try {
+//			insertarWorkshop = serviceWorkshopImpl.save(workshop);
+//		} catch (Exception e) {
+//			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//		return new ResponseEntity<Workshop>(insertarWorkshop, HttpStatus.OK);
+//
+//	}
+//	
 	@PostMapping("/add")
-	public ResponseEntity<?> insert(@RequestBody Workshop workshop) {
-		Workshop insertarWorkshop;
+    public ResponseEntity<?> addWorkshop(@RequestBody Map<String, Object> workshopData) {
+        String contenido = (String) workshopData.get("contenido");
+        String descripcion = (String) workshopData.get("descripcion");
+        LocalDate fecha = LocalDate.parse((String) workshopData.get("fecha"));
+        Integer idUsuario = Integer.parseInt((String) workshopData.get("idusuario"));
 
-		try {
-			insertarWorkshop = serviceWorkshopImpl.save(workshop);
-		} catch (Exception e) {
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		return new ResponseEntity<Workshop>(insertarWorkshop, HttpStatus.OK);
+        // Buscar el usuario por id
+        User user = serviceUserImpl.findById(idUsuario)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-	}
+        // Crear y guardar el workshop
+        Workshop workshop = new Workshop();
+        workshop.setContenido(contenido);
+        workshop.setDescripcion(descripcion);
+        workshop.setFecha(fecha);
+        workshop.setUsuario(user);
+
+        serviceWorkshopImpl.save(workshop);
+        return new ResponseEntity<>(workshop, HttpStatus.OK);
+    }
 
 	@GetMapping("/findAll")
 	public ResponseEntity<?> findAll() {

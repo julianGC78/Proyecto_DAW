@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import paixel.modelo.Curso;
 import paixel.modelo.Modulo;
+import paixel.servicesImpl.ServiceCursoImpl;
 import paixel.servicesImpl.ServiceModuloImpl;
 import paixel.servicesImpl.ServiceUserCursoImpl;
 import paixel.servicesImpl.ServiceUserModuloImpl;
@@ -32,24 +33,47 @@ public class ModuloWS {
 	ServiceModuloImpl serviceModuloImpl;
 	
 	 @Autowired
-	    ServiceUserModuloImpl serviceUsuarioModuloImpl;
-
-	    @Autowired
-	    ServiceUserCursoImpl serviceUsuarioCursoImpl;
+	 ServiceCursoImpl serviceCursoImpl;
 
 	Map<String, Object> response = new HashMap<String, Object>();
+//
+//	@PostMapping("/add")
+//	public ResponseEntity<?> insert(@RequestBody Modulo modulo) {
+//		Modulo insertarModulo;
+//
+//		try {
+//			insertarModulo = serviceModuloImpl.save(modulo);
+//		} catch (Exception e) {
+//			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//		return new ResponseEntity<Modulo>(insertarModulo, HttpStatus.OK);
+//	}
+	
+	 @PostMapping("/add")
+	    public ResponseEntity<?> addModulo(@RequestBody Map<String, Object> moduloData) {
+	        String titulo = (String) moduloData.get("titulo");
+	        String tiempo = (String) moduloData.get("tiempo");
+	        String descripcion = (String) moduloData.get("descripcion");
+	        String recurso = (String) moduloData.get("recurso");
+	        int orden = Integer.parseInt((String) moduloData.get("orden"));
+	        Integer idCurso = Integer.parseInt((String) moduloData.get("idcurso"));
 
-	@PostMapping("/add")
-	public ResponseEntity<?> insert(@RequestBody Modulo modulo) {
-		Modulo insertarModulo;
+	        // Buscar el curso por id
+	        Curso curso = serviceCursoImpl.findById(idCurso)
+	            .orElseThrow(() -> new RuntimeException("Curso no encontrado"));
 
-		try {
-			insertarModulo = serviceModuloImpl.save(modulo);
-		} catch (Exception e) {
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		return new ResponseEntity<Modulo>(insertarModulo, HttpStatus.OK);
-	}
+	        // Crear y guardar el modulo
+	        Modulo modulo = new Modulo();
+	        modulo.setTitulo(titulo);
+	        modulo.setTiempo(tiempo);
+	        modulo.setDescripcion(descripcion);
+	        modulo.setRecurso(recurso);
+	        modulo.setOrden(orden);
+	        modulo.setCurso(curso);
+
+	        serviceModuloImpl.save(modulo);
+	        return new ResponseEntity<>(modulo, HttpStatus.OK);
+	    }
 
 	 @GetMapping("/findById/{idmodulo}")
 	    public ResponseEntity<?> findById(@PathVariable Integer idmodulo) {

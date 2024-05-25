@@ -37,7 +37,7 @@ public class Modulo {
 	private List<UserModulo> usuario;
 	
 	@ManyToOne
-	@JoinColumn(name = "idcurso")
+	@JoinColumn(name = "idcurso",  referencedColumnName = "idcurso")
 	private Curso curso;
 
 	public Modulo(String titulo, String tiempo, String descripcion, String recurso, int orden, List<UserModulo> usuario,

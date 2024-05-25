@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import paixel.modelo.User;
 
 @Data
 @NoArgsConstructor
@@ -18,6 +19,7 @@ public class WorkshopDTO {
 	    private LocalDate fecha;
 	    private String username;
 	    private String apelluidos;
+	    private int idusuario;
 		public WorkshopDTO(String contenido, String descripcion, LocalDate fecha, String username, String apelluidos) {
 			super();
 			this.contenido = contenido;

@@ -27,7 +27,7 @@ public class Workshop {
 	private String descripcion;
 	private LocalDate fecha;
 	@ManyToOne
-	@JoinColumn(name = "idusuario")
+	@JoinColumn(name = "idusuario" ,referencedColumnName = "iduser")
 	private User usuario;
 	public Workshop(String contenido, String descripcion, LocalDate fecha2, User usuario) {
 		super();

@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import paixel.modelo.Curso;
-import paixel.modelo.Workshop;
+import paixel.modelo.Docente;
+import paixel.modelo.User;
 import paixel.servicesImpl.ServiceCursoImpl;
+import paixel.servicesImpl.ServiceDocenteImpl;
+import paixel.servicesImpl.ServiceUserImpl;
 
 /**
  * Controlador REST para la gestión de cursos.
@@ -41,45 +44,66 @@ public class CursoWS {
      */
 	@Autowired
 	ServiceCursoImpl serviceCursoImpl;
+	
+	@Autowired
+	ServiceUserImpl serviceUserImpl;
+	
+	@Autowired
+	ServiceDocenteImpl serviceDocenteImpl;
 
 	/**
      * Mapa utilizado para respuestas de error.
      */	
 	Map<String, Object> response = new HashMap<String, Object>();
 
-	/**
-     * Inserta un nuevo curso en la base de datos.
-     * <p>
-     * Este método recibe un objeto {@link Curso} en el cuerpo de la solicitud y, si es posible,
-     * lo inserta en la base de datos mediante el servicio asociado.
-     * </p>
-     *
-     * @param curso Objeto {@link Curso} que se desea insertar.
-     * @return ResponseEntity con el curso insertado o un mensaje de error si ocurre uno.
-     */
-	@PostMapping("/add")
-	public ResponseEntity<?> insert(@RequestBody Curso curso) {
-		Curso insertarCurso;
+	
+//	@PostMapping("/add")
+//	public ResponseEntity<?> insert(@RequestBody Curso curso) {
+//		Curso insertarCurso;
+//
+//		try {
+//			insertarCurso = serviceCursoImpl.save(curso);
+//		} catch (Exception e) {
+//			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//		return new ResponseEntity<Curso>(insertarCurso, HttpStatus.OK);
+//
+//	}
 
-		try {
-			insertarCurso = serviceCursoImpl.save(curso);
-		} catch (Exception e) {
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		return new ResponseEntity<Curso>(insertarCurso, HttpStatus.OK);
+    @PostMapping("/add")
+    public ResponseEntity<?> addCurso(@RequestBody Map<String, Object> cursoData) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            String titulo = (String) cursoData.get("titulo");
+            String descripcion = (String) cursoData.get("descripcion");
+            String recurso = (String) cursoData.get("recurso");
+            Integer idUsuario = Integer.parseInt((String) cursoData.get("idusuario"));
+            Integer idDocente = Integer.parseInt((String) cursoData.get("iddocente"));
 
-	}
+            // Buscar el usuario y el docente por sus ids
+            User user = serviceUserImpl.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + idUsuario));
+            Docente docente = serviceDocenteImpl.findById(idDocente)
+                .orElseThrow(() -> new RuntimeException("Docente no encontrado: " + idDocente));
 
-	/**
-     * Recupera todos los cursos disponibles en la base de datos.
-     * <p>
-     * Este método consulta al servicio asociado para recuperar una lista de todos los cursos
-     * almacenados en la base de datos. Maneja cualquier excepción que pueda ocurrir durante
-     * la recuperación.
-     * </p>
-     *
-     * @return ResponseEntity con la lista de cursos o un mensaje de error si ocurre uno.
-     */
+            // Crear y guardar el curso
+            Curso curso = new Curso();
+            curso.setTitulo(titulo);
+            curso.setDescripcion(descripcion);
+            curso.setRecurso(recurso);
+            curso.setUser(user);
+            curso.setDocente(docente);
+
+            serviceCursoImpl.save(curso);
+            return new ResponseEntity<>(curso, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            response.put("message", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            response.put("message", "Error al añadir el curso");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
 	@GetMapping("/findAll")
 	public ResponseEntity<?> findAll() {
 		List<Curso> usuarios;
