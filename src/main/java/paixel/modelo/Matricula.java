@@ -21,12 +21,14 @@ import lombok.NoArgsConstructor;
 @Table(name="matriculas")
 public class Matricula {
 
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idPago;
-	@ManyToOne
-	@JoinColumn(name = "iduser") // Asegúrate de que esto refleja el nombre correcto de la columna en la base de datos.
-	private User user;    
-    private Boolean pagado = false;
-    private LocalDate fechaPago;
+	 @Id
+	    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	    private Integer idPago;
+
+	    @ManyToOne
+	    @JoinColumn(name = "iduser", referencedColumnName = "iduser")
+	    private User user;  // Relación Many-to-One con la entidad User
+
+	    private Boolean pagado;  // Campo booleano para indicar si está pagado
+	    private LocalDate fechaPago;  // Fecha de pago
 }

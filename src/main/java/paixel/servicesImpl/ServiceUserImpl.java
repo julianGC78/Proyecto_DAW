@@ -239,7 +239,13 @@ public class ServiceUserImpl implements ServiceUser {
 	        // Luego, eliminar el usuario.
 	        userRepository.deleteById(id);
 	    }
-
+	   
+	   public long countUsers() {
+	        return userRepository.count();
+	    }
 	
+	   public long countMatriculatedUsers() {
+	        return userRepository.countByMatriculaTrue();
+	    }
 
 }

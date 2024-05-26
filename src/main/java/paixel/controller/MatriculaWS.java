@@ -1,6 +1,5 @@
 package paixel.controller;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -106,21 +106,23 @@ public class MatriculaWS {
 		    }
 		}
 		
-		@PutMapping("/pagar/{userId}")
-	    public ResponseEntity<?> actualizarPago(@PathVariable Integer userId) {
-	        Optional<Matricula> matriculaOpt = serviceMatriculaImpl.findByUser_Iduser(userId);
-	        if (matriculaOpt.isPresent()) {
-	            Matricula matricula = matriculaOpt.get();
-	            matricula.setPagado(true);
-	            matricula.setFechaPago(LocalDate.now());
-	            serviceMatriculaImpl.save(matricula);
-	            return ResponseEntity.ok().build();
-	        } else {
-	            return ResponseEntity.notFound().build();
-	        }
-	    }
-
-
-
+		
+		
+		 @PutMapping("/pagar/{userId}")
+		    public ResponseEntity<?> actualizarPago(@PathVariable Integer userId) {
+		        System.out.println("Actualizando pago para UserID: " + userId);
+		        Optional<Matricula> matriculaOpt = serviceMatriculaImpl.findByUser_Iduser(userId);
+		        if (matriculaOpt.isPresent()) {
+		            Matricula matricula = matriculaOpt.get();
+		            matricula.setPagado(true);
+		            matricula.setFechaPago(LocalDate.now());
+		            serviceMatriculaImpl.save(matricula);
+		            System.out.println("Pago actualizado para UserID: " + userId);
+		            return ResponseEntity.ok().build();
+		        } else {
+		            System.out.println("No se encontró matricula para UserID: " + userId);
+		            return ResponseEntity.notFound().build();
+		        }
+		    }
 
 }

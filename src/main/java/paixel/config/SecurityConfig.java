@@ -35,7 +35,7 @@ public class SecurityConfig {
 	        .authorizeHttpRequests(authRequest -> authRequest
 	            .requestMatchers("/usuario/findAll", "/workshop/findAll", "/curso/findAll", "/curso/findById/**", "/usuarioCurso/findById/**", "/usuarioCurso/findByUserIdAndCursoId/**").permitAll()
 	            .requestMatchers("/matricula/pagar/**", "/modulos/byCurso/**").authenticated()
-	            .requestMatchers("/modulo/findById/**").permitAll()
+	            .requestMatchers("/modulo/findById/**","/matricula/pagar/**").permitAll()
 	            .requestMatchers("/usuario/update/**", "/usuario/delete/**","/usuario/add/**").hasAnyAuthority("USER", "ADMIN")
 	            .requestMatchers("/workshop/add/**","/modulo/add/**","/curso/add/**").hasAnyAuthority("ADMIN")
 	            .requestMatchers("/workshop/update/**","/modulo/update/**","/curso/update/**").hasAnyAuthority("ADMIN")

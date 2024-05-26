@@ -38,19 +38,7 @@ public class WorkshopWS {
 	
 	Map<String, Object> response = new HashMap<String, Object>();
 	
-//	@PostMapping("/add")
-//	public ResponseEntity<?> insert(@RequestBody Workshop workshop) {
-//		Workshop insertarWorkshop;
-//
-//		try {
-//			insertarWorkshop = serviceWorkshopImpl.save(workshop);
-//		} catch (Exception e) {
-//			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
-//		return new ResponseEntity<Workshop>(insertarWorkshop, HttpStatus.OK);
-//
-//	}
-//	
+	
 	@PostMapping("/add")
     public ResponseEntity<?> addWorkshop(@RequestBody Map<String, Object> workshopData) {
         String contenido = (String) workshopData.get("contenido");

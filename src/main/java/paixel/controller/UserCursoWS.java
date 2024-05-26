@@ -91,7 +91,6 @@ public class UserCursoWS {
 	    }
 
 
-
 	 @DeleteMapping("delete/{id}")
 	 public ResponseEntity<?> delete(@PathVariable Integer id) {
 	     Map<String, Object> response = new HashMap<>();
@@ -107,5 +106,7 @@ public class UserCursoWS {
 	         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	     }
 	 }
+	 
+	
 
 }
