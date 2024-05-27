@@ -37,19 +37,7 @@ public class ModuloWS {
 	 ServiceCursoImpl serviceCursoImpl;
 
 	Map<String, Object> response = new HashMap<String, Object>();
-//
-//	@PostMapping("/add")
-//	public ResponseEntity<?> insert(@RequestBody Modulo modulo) {
-//		Modulo insertarModulo;
-//
-//		try {
-//			insertarModulo = serviceModuloImpl.save(modulo);
-//		} catch (Exception e) {
-//			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
-//		return new ResponseEntity<Modulo>(insertarModulo, HttpStatus.OK);
-//	}
-	
+
 	 @PostMapping("/add")
 	    public ResponseEntity<?> addModulo(@RequestBody Map<String, Object> moduloData) {
 	        String titulo = (String) moduloData.get("titulo");

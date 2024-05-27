@@ -19,4 +19,7 @@ public interface MatriculaRepository extends JpaRepository<Matricula, Integer>{
 	    @Transactional
 	    @Query("DELETE FROM Matricula m WHERE m.user.iduser = :userId")
 	    void deleteByUserId(@Param("userId") Integer userId);
+	 
+//	 @Query("SELECT m FROM Matricula m WHERE m.user.iduser = :idUsuario AND m.curso.idcurso = :idCurso")
+//	    Optional<Matricula> findByUserIdAndCursoId(@Param("idUsuario") Integer idUsuario, @Param("idCurso") Integer idCurso);
 }

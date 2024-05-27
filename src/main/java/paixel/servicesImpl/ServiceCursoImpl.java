@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import paixel.modelo.Curso;
 import paixel.modelo.Docente;
+import paixel.modelo.Modulo;
 import paixel.modelo.User;
 import paixel.repository.CursoRepository;
 import paixel.repository.DocenteRepository;
@@ -216,6 +217,10 @@ public class ServiceCursoImpl implements ServiceCurso {
 
 	        return cursoRepository.save(existingCurso);
 	    }
+	  
+	  public Optional<Curso> findByTitulo(String titulo) {
+			return cursoRepository.findByTitulo(titulo);
+		}
 	
 
 }

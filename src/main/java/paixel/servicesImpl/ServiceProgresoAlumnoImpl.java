@@ -180,4 +180,9 @@ public class ServiceProgresoAlumnoImpl implements ServiceProgresoAlumno {
 		progresoAlumnoRepository.deleteAll();
 	}
 	
+	  
+//	  public Optional<ProgresoAlumno> findByModuloIdmoduloAndUsuarioIduser(Integer idModulo, Integer idUsuario) {
+//	        return progresoAlumnoRepository.findByModuloIdmoduloAndUsuarioIduser(idModulo, idUsuario);
+//	    }
+	
 }
