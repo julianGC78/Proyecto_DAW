@@ -13,6 +13,7 @@ import paixel.modelo.Matricula;
 public interface MatriculaRepository extends JpaRepository<Matricula, Integer>{
 
 	 Optional<Matricula> findByUser_Iduser(Integer iduser);
+	 long countByPagadoTrue();
 	 
 	 @Modifying
 	    @Transactional

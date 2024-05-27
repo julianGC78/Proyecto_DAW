@@ -150,16 +150,5 @@ public class UsuarioWS {
 	        }
 	    }
 
-	 @GetMapping("/countMatriculated")
-	    public ResponseEntity<?> countMatriculatedUsers() {
-	        Map<String, Object> response = new HashMap<>();
-	        try {
-	            long matriculatedUserCount = serviceUserImpl.countMatriculatedUsers();
-	            response.put("matriculatedUserCount", matriculatedUserCount);
-	            return new ResponseEntity<>(response, HttpStatus.OK);
-	        } catch (Exception e) {
-	            response.put("message", "Error al contar los usuarios matriculados: " + e.getMessage());
-	            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-	        }
-	    }
+	
 }

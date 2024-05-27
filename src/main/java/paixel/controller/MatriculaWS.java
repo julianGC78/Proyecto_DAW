@@ -100,14 +100,13 @@ public class MatriculaWS {
 		public ResponseEntity<?> obtenerEstadoDePago(@PathVariable Integer userId) {
 		    Optional<Matricula> matricula = serviceMatriculaImpl.findByUser_Iduser(userId);
 		    if (matricula.isPresent()) {
-		        return ResponseEntity.ok(matricula.get().getPagado());
+		        return ResponseEntity.ok(matricula.get().isPagado());
 		    } else {
 		        return ResponseEntity.notFound().build();
 		    }
 		}
 		
-		
-		
+			
 		 @PutMapping("/pagar/{userId}")
 		    public ResponseEntity<?> actualizarPago(@PathVariable Integer userId) {
 		        System.out.println("Actualizando pago para UserID: " + userId);
@@ -122,6 +121,19 @@ public class MatriculaWS {
 		        } else {
 		            System.out.println("No se encontró matricula para UserID: " + userId);
 		            return ResponseEntity.notFound().build();
+		        }
+		    }
+		 
+		 @GetMapping("/countMatriculated")
+		    public ResponseEntity<?> countMatriculatedUsers() {
+		        Map<String, Object> response = new HashMap<>();
+		        try {
+		            long matriculatedUserCount = serviceMatriculaImpl.countMatriculatedUsers();
+		            response.put("matriculatedUserCount", matriculatedUserCount);
+		            return new ResponseEntity<>(response, HttpStatus.OK);
+		        } catch (Exception e) {
+		            response.put("message", "Error al contar los usuarios matriculados: " + e.getMessage());
+		            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		        }
 		    }
 

@@ -12,12 +12,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import paixel.modelo.Matricula;
 import paixel.repository.MatriculaRepository;
 import paixel.services.ServiceMatricula;
 
 @Service
+@Transactional
 public class ServiceMatriculaImpl implements ServiceMatricula {
 	
 	@Autowired
@@ -183,7 +184,9 @@ public class ServiceMatriculaImpl implements ServiceMatricula {
 	}
 
 	
-	
+	  public long countMatriculatedUsers() {
+	        return matriculaRepository.countByPagadoTrue();
+	    }
 	
 
 

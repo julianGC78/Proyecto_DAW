@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import paixel.modelo.Docente;
 import paixel.repository.DocenteRepository;
+import paixel.services.ServiceDocente;
 
 @Service
 public class ServiceDocenteImpl implements ServiceDocente {

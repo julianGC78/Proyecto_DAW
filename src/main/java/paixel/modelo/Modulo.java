@@ -33,14 +33,12 @@ public class Modulo {
 	private String recurso;
 	private Integer orden;
 	
-	@OneToMany(mappedBy = "modulo", cascade = CascadeType.REMOVE)
-	private List<UserModulo> usuario;
 	
 	@ManyToOne
 	@JoinColumn(name = "idcurso",  referencedColumnName = "idcurso")
 	private Curso curso;
 
-	public Modulo(String titulo, String tiempo, String descripcion, String recurso, int orden, List<UserModulo> usuario,
+	public Modulo(String titulo, String tiempo, String descripcion, String recurso, int orden, 
 			Curso curso) {
 		super();
 		this.titulo = titulo;
@@ -48,7 +46,6 @@ public class Modulo {
 		this.descripcion = descripcion;
 		this.recurso = recurso;
 		this.orden = orden;
-		this.usuario = usuario;
 		this.curso = curso;
 	}
 
