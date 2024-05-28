@@ -187,9 +187,6 @@ public class ServiceMatriculaImpl implements ServiceMatricula {
 	  public long countMatriculatedUsers() {
 	        return matriculaRepository.countByPagadoTrue();
 	    }
-	
-//	   public Optional<Matricula> findByUserIdAndCursoId(Integer idUsuario, Integer idCurso) {
-//	        return matriculaRepository.findByUserIdAndCursoId(idUsuario, idCurso);
-//	    }
 
+	   
 }

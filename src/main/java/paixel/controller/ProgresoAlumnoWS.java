@@ -105,47 +105,20 @@ public class ProgresoAlumnoWS {
     @Autowired
     private UserRepository userRepository;
 
-//    @PostMapping("/registrarVisto")
-//    public ResponseEntity<?> registrarModuloVisto(@RequestParam Integer idModulo, @RequestParam Integer idUsuario) {
-//        Optional<Modulo> moduloOpt = moduloRepository.findById(idModulo);
-//        Optional<User> userOpt = userRepository.findById(idUsuario);
-//
-//        if (moduloOpt.isPresent() && userOpt.isPresent()) {
-//            Modulo modulo = moduloOpt.get();
-//            User usuario = userOpt.get();
-//
-//            Optional<ProgresoAlumno> progresoOpt = serviceProgresoAlumnoImpl.findByModuloIdmoduloAndUsuarioIduser(idModulo, idUsuario);
-//            ProgresoAlumno progreso;
-//            if (progresoOpt.isPresent()) {
-//                progreso = progresoOpt.get();
-//            } else {
-//                progreso = new ProgresoAlumno();
-//                progreso.setModulo(modulo);
-//                progreso.setUsuario(usuario);
-//            }
-//
-//            progreso.setCompletado(true);
-//            progreso.setFechaVisto(LocalDate.now());
-//            serviceProgresoAlumnoImpl.save(progreso);
-//
-//         // Verificar si todos los módulos del curso están completos
-//            Curso curso = modulo.getCurso();
-//            List<Modulo> modulos = moduloRepository.findByCurso_Idcurso(curso.getIdcurso());
-//            long count = modulos.stream()
-//                    .filter(m -> serviceProgresoAlumnoImpl.findByModuloIdmoduloAndUsuarioIduser(m.getIdmodulo(), idUsuario)
-//                            .map(ProgresoAlumno::isCompletado).orElse(false))
-//                    .count();
-//            if (count == modulos.size()) {
-//                Optional<Matricula> matriculaOpt = matriculaRepository.findByUserIdAndCursoId(idUsuario, curso.getIdcurso());
-//                if (matriculaOpt.isPresent()) {
-//                    Matricula matricula = matriculaOpt.get();
-//                    matricula.setDiplomaOtorgado(true);
-//                    matriculaRepository.save(matricula);
-//                }
-//            }
-//            return ResponseEntity.ok().build();
-//        } else {
-//            return ResponseEntity.badRequest().body("Modulo o Usuario no encontrado");
-//        }
-//    }
+  
+
+    public static class VideoRequest {
+        public Integer idUsuario;
+        public Integer idModulo;
+
+        // getters and setters
+    }
+
+    @PostMapping("/progreso/iniciar-video")
+    public ResponseEntity<?> iniciarVideo(@RequestBody VideoRequest request) {
+        System.out.println("Solicitud para iniciar video recibida: idUsuario=" + request.idUsuario + ", idModulo=" + request.idModulo);
+        serviceProgresoAlumnoImpl.iniciarVideo(request.idUsuario, request.idModulo);
+        System.out.println("Video iniciado correctamente para idUsuario=" + request.idUsuario + ", idModulo=" + request.idModulo);
+        return ResponseEntity.ok().build();
+    }
 }

@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "preguntas", uniqueConstraints = {
-		@UniqueConstraint(columnNames = { "idusuario", "idcurso", "fecha" }) })
+@Table(name = "preguntas")
+		
 public class Pregunta {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,15 +30,15 @@ public class Pregunta {
 	@JoinColumn(name = "idusuario")
 	private User usuario;
 	@ManyToOne
-	@JoinColumn(name = "idcurso")
-	private Curso curso;
+	@JoinColumn(name = "idmodulo" , referencedColumnName = "idmodulo")
+	private Modulo modulo;
 
-	public Pregunta(String contenido, LocalDate fecha, User usuario, Curso curso) {
+	public Pregunta(String contenido, LocalDate fecha, User usuario, Modulo modulo) {
 		super();
 		this.contenido = contenido;
 		this.fecha = fecha;
 		this.usuario = usuario;
-		this.curso = curso;
+		this.modulo = modulo;
 	}
 
 }

@@ -32,8 +32,7 @@ public class Modulo {
 	private String descripcion;
 	private String recurso;
 	private Integer orden;
-	
-	
+		
 	@ManyToOne
 	@JoinColumn(name = "idcurso",  referencedColumnName = "idcurso")
 	private Curso curso;

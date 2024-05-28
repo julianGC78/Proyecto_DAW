@@ -1,5 +1,6 @@
 package paixel.servicesImpl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -12,8 +13,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
+import paixel.modelo.Modulo;
 import paixel.modelo.ProgresoAlumno;
+import paixel.modelo.User;
+import paixel.repository.ModuloRepository;
 import paixel.repository.ProgresoAlumnoRepository;
+import paixel.repository.UserRepository;
 import paixel.services.ServiceProgresoAlumno;
 
 @Service
@@ -179,10 +184,29 @@ public class ServiceProgresoAlumnoImpl implements ServiceProgresoAlumno {
 	public void deleteAll() {
 		progresoAlumnoRepository.deleteAll();
 	}
+	 @Autowired
+	    private UserRepository userRepository;
+
+	    @Autowired
+	    private ModuloRepository moduloRepository;
 	
-	  
-//	  public Optional<ProgresoAlumno> findByModuloIdmoduloAndUsuarioIduser(Integer idModulo, Integer idUsuario) {
-//	        return progresoAlumnoRepository.findByModuloIdmoduloAndUsuarioIduser(idModulo, idUsuario);
-//	    }
+	    public void iniciarVideo(Integer idUsuario, Integer idModulo) {
+	        System.out.println("Iniciar video para usuario: " + idUsuario + ", modulo: " + idModulo);
+
+	        User usuario = userRepository.findById(idUsuario)
+	            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+	        Modulo modulo = moduloRepository.findById(idModulo)
+	            .orElseThrow(() -> new RuntimeException("Módulo no encontrado"));
+
+	        ProgresoAlumno progreso = ProgresoAlumno.builder()
+	            .usuario(usuario)
+	            .modulo(modulo)
+	            .fechaVisto(LocalDate.now())
+	            .completado(false)
+	            .build();
+
+	        progresoAlumnoRepository.save(progreso);
+	        System.out.println("Progreso guardado: usuario: " + idUsuario + ", modulo: " + idModulo);
+	    }
 	
 }

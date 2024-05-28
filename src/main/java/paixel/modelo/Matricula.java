@@ -34,5 +34,6 @@ public class Matricula {
 	    
 	    @Column(nullable = false)
 	    private boolean diplomaOtorgado = false;
+	  
 	    
 }
