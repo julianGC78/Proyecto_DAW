@@ -1,6 +1,7 @@
 package paixel.servicesImpl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Function;
@@ -11,20 +12,27 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import paixel.modelo.Curso;
 import paixel.modelo.Docente;
-import paixel.modelo.Modulo;
 import paixel.modelo.User;
 import paixel.repository.CursoRepository;
 import paixel.repository.DocenteRepository;
 import paixel.repository.UserRepository;
 import paixel.services.ServiceCurso;
+
 @Service
 public class ServiceCursoImpl implements ServiceCurso {
-	@Autowired 
+	@Autowired
 	private CursoRepository cursoRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private DocenteRepository docenteRepository;
 
 	@Override
 	public <S extends Curso> S save(S entity) {
@@ -180,47 +188,50 @@ public class ServiceCursoImpl implements ServiceCurso {
 	public void deleteAll() {
 		cursoRepository.deleteAll();
 	}
-	
-	
-	 @Autowired
-	    private UserRepository userRepository;
 
-	    @Autowired
-	    private DocenteRepository docenteRepository;
-	    
-	  public Curso updateCurso(Integer id, Curso cursoUpdates) {
-	        Optional<Curso> cursoOptional = cursoRepository.findById(id);
-	        if (!cursoOptional.isPresent()) {
-	            throw new NoSuchElementException("No se encontró el curso con el ID: " + id);
-	        }
-	        Curso existingCurso = cursoOptional.get();
-
-	        if (cursoUpdates.getTitulo() != null) {
-	            existingCurso.setTitulo(cursoUpdates.getTitulo());
-	        }
-	        if (cursoUpdates.getDescripcion() != null) {
-	            existingCurso.setDescripcion(cursoUpdates.getDescripcion());
-	        }
-	        if (cursoUpdates.getRecurso() != null) {
-	            existingCurso.setRecurso(cursoUpdates.getRecurso());
-	        }
-	        if (cursoUpdates.getUser() != null) {
-	            User user = userRepository.findById(cursoUpdates.getUser().getIduser())
-	                .orElseThrow(() -> new NoSuchElementException("Usuario no encontrado"));
-	            existingCurso.setUser(user);
-	        }
-	        if (cursoUpdates.getDocente() != null) {
-	            Docente docente = docenteRepository.findById(cursoUpdates.getDocente().getIddocente())
-	                .orElseThrow(() -> new NoSuchElementException("Docente no encontrado"));
-	            existingCurso.setDocente(docente);
-	        }
-
-	        return cursoRepository.save(existingCurso);
-	    }
-	  
-	  public Optional<Curso> findByTitulo(String titulo) {
-			return cursoRepository.findByTitulo(titulo);
+	public Curso updateCurso(Integer id, Curso cursoUpdates) {
+		Optional<Curso> cursoOptional = cursoRepository.findById(id);
+		if (!cursoOptional.isPresent()) {
+			throw new NoSuchElementException("No se encontró el curso con el ID: " + id);
 		}
-	
+		Curso existingCurso = cursoOptional.get();
+
+		if (cursoUpdates.getTitulo() != null) {
+			existingCurso.setTitulo(cursoUpdates.getTitulo());
+		}
+		if (cursoUpdates.getDescripcion() != null) {
+			existingCurso.setDescripcion(cursoUpdates.getDescripcion());
+		}
+		if (cursoUpdates.getRecurso() != null) {
+			existingCurso.setRecurso(cursoUpdates.getRecurso());
+		}
+		if (cursoUpdates.getUser() != null) {
+			User user = userRepository.findById(cursoUpdates.getUser().getIduser())
+					.orElseThrow(() -> new NoSuchElementException("Usuario no encontrado"));
+			existingCurso.setUser(user);
+		}
+		if (cursoUpdates.getDocente() != null) {
+			Docente docente = docenteRepository.findById(cursoUpdates.getDocente().getIddocente())
+					.orElseThrow(() -> new NoSuchElementException("Docente no encontrado"));
+			existingCurso.setDocente(docente);
+		}
+
+		return cursoRepository.save(existingCurso);
+	}
+
+	public Optional<Curso> findByTitulo(String titulo) {
+		return cursoRepository.findByTitulo(titulo);
+	}
+	 @Autowired
+	    private JdbcTemplate jdbcTemplate;
+
+	    public List<Map<String, Object>> getPreguntasPorCurso() {
+	        String sql = "SELECT c.titulo AS curso, COUNT(p.idpregunta) AS num_preguntas " +
+	                     "FROM cursos c " +
+	                     "JOIN modulos m ON c.idcurso = m.idcurso " +
+	                     "JOIN preguntas p ON m.idmodulo = p.idmodulo " +
+	                     "GROUP BY c.idcurso";
+	        return jdbcTemplate.queryForList(sql);
+	    }
 
 }

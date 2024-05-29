@@ -37,7 +37,7 @@ public class SecurityConfig {
 	                .requestMatchers("/matricula/pagar/**", "/modulos/byCurso/**").authenticated()
 	                .requestMatchers("/modulo/findById/**", "/matricula/pagar/**", "/progreso/iniciar-video/**","/pregunta/findById/**").hasAnyAuthority("USER", "ADMIN")
 	                .requestMatchers("/usuario/update/**", "/usuario/delete/**", "/usuario/add/**","/pregunta/add/**","pregunta/byModulo/**","/pregunta/update/**").hasAnyAuthority("USER", "ADMIN")
-	                .requestMatchers("/workshop/add/**", "/modulo/add/**", "/curso/add/**").hasAnyAuthority("ADMIN")
+	                .requestMatchers("/workshop/add/**", "/modulo/add/**", "/curso/add/**","/curso/preguntas-por-curso/**").hasAnyAuthority("ADMIN")
 	                .requestMatchers("/workshop/update/**", "/modulo/update/**", "/curso/update/**").hasAnyAuthority("ADMIN")
 	                .requestMatchers("/usuario/findById/**", "/docente/findAll/**", "/docente.delete/**", "/workshop.findAll/**").hasAnyAuthority("USER", "ADMIN")
 	                .requestMatchers("/auth/**").permitAll()

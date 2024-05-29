@@ -27,7 +27,11 @@ public class ServiceProgresoAlumnoImpl implements ServiceProgresoAlumno {
 	@Autowired
 	private ProgresoAlumnoRepository progresoAlumnoRepository;
 
-	
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private ModuloRepository moduloRepository;
 
 	@Override
 	public <S extends ProgresoAlumno> S save(S entity) {
@@ -184,29 +188,20 @@ public class ServiceProgresoAlumnoImpl implements ServiceProgresoAlumno {
 	public void deleteAll() {
 		progresoAlumnoRepository.deleteAll();
 	}
-	 @Autowired
-	    private UserRepository userRepository;
 
-	    @Autowired
-	    private ModuloRepository moduloRepository;
-	
-	    public void iniciarVideo(Integer idUsuario, Integer idModulo) {
-	        System.out.println("Iniciar video para usuario: " + idUsuario + ", modulo: " + idModulo);
+	public void iniciarVideo(Integer idUsuario, Integer idModulo) {
+		System.out.println("Iniciar video para usuario: " + idUsuario + ", modulo: " + idModulo);
 
-	        User usuario = userRepository.findById(idUsuario)
-	            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-	        Modulo modulo = moduloRepository.findById(idModulo)
-	            .orElseThrow(() -> new RuntimeException("Módulo no encontrado"));
+		User usuario = userRepository.findById(idUsuario)
+				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+		Modulo modulo = moduloRepository.findById(idModulo)
+				.orElseThrow(() -> new RuntimeException("Módulo no encontrado"));
 
-	        ProgresoAlumno progreso = ProgresoAlumno.builder()
-	            .usuario(usuario)
-	            .modulo(modulo)
-	            .fechaVisto(LocalDate.now())
-	            .completado(false)
-	            .build();
+		ProgresoAlumno progreso = ProgresoAlumno.builder().usuario(usuario).modulo(modulo).fechaVisto(LocalDate.now())
+				.completado(false).build();
 
-	        progresoAlumnoRepository.save(progreso);
-	        System.out.println("Progreso guardado: usuario: " + idUsuario + ", modulo: " + idModulo);
-	    }
-	
+		progresoAlumnoRepository.save(progreso);
+		System.out.println("Progreso guardado: usuario: " + idUsuario + ", modulo: " + idModulo);
+	}
+
 }

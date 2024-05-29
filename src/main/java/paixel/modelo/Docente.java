@@ -26,11 +26,13 @@ public class Docente {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer iddocente;
+	
 	String username;
 	String especialidad;
 	
 	@Column(length = 500)
 	String descripcion;
+	
 	String recurso;
 
 	 @OneToMany(mappedBy = "docente", cascade = CascadeType.ALL)

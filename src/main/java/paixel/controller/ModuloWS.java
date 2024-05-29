@@ -32,46 +32,45 @@ public class ModuloWS {
 
 	@Autowired
 	ServiceModuloImpl serviceModuloImpl;
-	
-	 @Autowired
-	 ServiceCursoImpl serviceCursoImpl;
+
+	@Autowired
+	ServiceCursoImpl serviceCursoImpl;
 
 	Map<String, Object> response = new HashMap<String, Object>();
 
-	 @PostMapping("/add")
-	    public ResponseEntity<?> addModulo(@RequestBody Map<String, Object> moduloData) {
-	        String titulo = (String) moduloData.get("titulo");
-	        String tiempo = (String) moduloData.get("tiempo");
-	        String descripcion = (String) moduloData.get("descripcion");
-	        String recurso = (String) moduloData.get("recurso");
-	        int orden = Integer.parseInt((String) moduloData.get("orden"));
-	        Integer idCurso = Integer.parseInt((String) moduloData.get("idcurso"));
+	@PostMapping("/add")
+	public ResponseEntity<?> addModulo(@RequestBody Map<String, Object> moduloData) {
+		String titulo = (String) moduloData.get("titulo");
+		String tiempo = (String) moduloData.get("tiempo");
+		String descripcion = (String) moduloData.get("descripcion");
+		String recurso = (String) moduloData.get("recurso");
+		int orden = Integer.parseInt((String) moduloData.get("orden"));
+		Integer idCurso = Integer.parseInt((String) moduloData.get("idcurso"));
 
-	        // Buscar el curso por id
-	        Curso curso = serviceCursoImpl.findById(idCurso)
-	            .orElseThrow(() -> new RuntimeException("Curso no encontrado"));
+		// Buscar el curso por id
+		Curso curso = serviceCursoImpl.findById(idCurso).orElseThrow(() -> new RuntimeException("Curso no encontrado"));
 
-	        // Crear y guardar el modulo
-	        Modulo modulo = new Modulo();
-	        modulo.setTitulo(titulo);
-	        modulo.setTiempo(tiempo);
-	        modulo.setDescripcion(descripcion);
-	        modulo.setRecurso(recurso);
-	        modulo.setOrden(orden);
-	        modulo.setCurso(curso);
+		// Crear y guardar el modulo
+		Modulo modulo = new Modulo();
+		modulo.setTitulo(titulo);
+		modulo.setTiempo(tiempo);
+		modulo.setDescripcion(descripcion);
+		modulo.setRecurso(recurso);
+		modulo.setOrden(orden);
+		modulo.setCurso(curso);
 
-	        serviceModuloImpl.save(modulo);
-	        return new ResponseEntity<>(modulo, HttpStatus.OK);
-	    }
+		serviceModuloImpl.save(modulo);
+		return new ResponseEntity<>(modulo, HttpStatus.OK);
+	}
 
-	 @GetMapping("/findById/{idmodulo}")
-	    public ResponseEntity<?> findById(@PathVariable Integer idmodulo) {
-	        Optional<Modulo> modulo = serviceModuloImpl.findById(idmodulo);
-	        if (!modulo.isPresent()) {
-	            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	        }
-	        return new ResponseEntity<>(modulo.get(), HttpStatus.OK);
-	    }
+	@GetMapping("/findById/{idmodulo}")
+	public ResponseEntity<?> findById(@PathVariable Integer idmodulo) {
+		Optional<Modulo> modulo = serviceModuloImpl.findById(idmodulo);
+		if (!modulo.isPresent()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(modulo.get(), HttpStatus.OK);
+	}
 
 	@GetMapping("/findAll")
 	public ResponseEntity<?> findAll() {
@@ -99,74 +98,74 @@ public class ModuloWS {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@GetMapping("/byCurso/{idcurso}")
-    public ResponseEntity<?> findByCursoId(@PathVariable Integer idcurso) {
-        List<Modulo> modulos;
-        try {
-            modulos = serviceModuloImpl.findByCursoId(idcurso);
-            if (modulos.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error al buscar módulos: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(modulos, HttpStatus.OK);
-    }
-	
-    @GetMapping("/cursoByModulo/{idmodulo}")
-    public ResponseEntity<Curso> getCursoByModulo(@PathVariable int idmodulo) {
-        Optional<Modulo> moduloOptional = serviceModuloImpl.findById(idmodulo);
-        if (moduloOptional.isPresent()) {
-            Curso curso = moduloOptional.get().getCurso();
-            return ResponseEntity.ok(curso);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-    
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Map<String, Object> moduloData, @RequestHeader("Authorization") String token) {
-        Map<String, Object> response = new HashMap<>();
-        try {
-            Modulo moduloUpdates = new Modulo();
+	public ResponseEntity<?> findByCursoId(@PathVariable Integer idcurso) {
+		List<Modulo> modulos;
+		try {
+			modulos = serviceModuloImpl.findByCursoId(idcurso);
+			if (modulos.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>("Error al buscar módulos: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<>(modulos, HttpStatus.OK);
+	}
 
-            if (moduloData.get("titulo") != null) {
-                moduloUpdates.setTitulo((String) moduloData.get("titulo"));
-            }
-            if (moduloData.get("tiempo") != null) {
-                moduloUpdates.setTiempo((String) moduloData.get("tiempo"));
-            }
-            if (moduloData.get("descripcion") != null) {
-                moduloUpdates.setDescripcion((String) moduloData.get("descripcion"));
-            }
-            if (moduloData.get("recurso") != null) {
-                moduloUpdates.setRecurso((String) moduloData.get("recurso"));
-            }
-            if (moduloData.get("orden") != null) {
-                moduloUpdates.setOrden(Integer.parseInt((String) moduloData.get("orden")));
-            }
-            if (moduloData.get("idcurso") != null) {
-                Integer idCurso = Integer.parseInt((String) moduloData.get("idcurso"));
-                Curso curso = new Curso();
-                curso.setIdcurso(idCurso);
-                moduloUpdates.setCurso(curso);
-            }
+	@GetMapping("/cursoByModulo/{idmodulo}")
+	public ResponseEntity<Curso> getCursoByModulo(@PathVariable int idmodulo) {
+		Optional<Modulo> moduloOptional = serviceModuloImpl.findById(idmodulo);
+		if (moduloOptional.isPresent()) {
+			Curso curso = moduloOptional.get().getCurso();
+			return ResponseEntity.ok(curso);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
-            Modulo updatedModulo = serviceModuloImpl.updateModulo(id, moduloUpdates);
-            response.put("modulo", updatedModulo);
-            response.put("message", "Modulo actualizado con éxito");
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            response.put("message", "No se encontró el modulo con el ID: " + id);
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            response.put("message", "Error al actualizar el modulo: " + e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    
-    
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Map<String, Object> moduloData,
+			@RequestHeader("Authorization") String token) {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			Modulo moduloUpdates = new Modulo();
+
+			if (moduloData.get("titulo") != null) {
+				moduloUpdates.setTitulo((String) moduloData.get("titulo"));
+			}
+			if (moduloData.get("tiempo") != null) {
+				moduloUpdates.setTiempo((String) moduloData.get("tiempo"));
+			}
+			if (moduloData.get("descripcion") != null) {
+				moduloUpdates.setDescripcion((String) moduloData.get("descripcion"));
+			}
+			if (moduloData.get("recurso") != null) {
+				moduloUpdates.setRecurso((String) moduloData.get("recurso"));
+			}
+			if (moduloData.get("orden") != null) {
+				moduloUpdates.setOrden(Integer.parseInt((String) moduloData.get("orden")));
+			}
+			if (moduloData.get("idcurso") != null) {
+				Integer idCurso = Integer.parseInt((String) moduloData.get("idcurso"));
+				Curso curso = new Curso();
+				curso.setIdcurso(idCurso);
+				moduloUpdates.setCurso(curso);
+			}
+
+			Modulo updatedModulo = serviceModuloImpl.updateModulo(id, moduloUpdates);
+			response.put("modulo", updatedModulo);
+			response.put("message", "Modulo actualizado con éxito");
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (NoSuchElementException e) {
+			response.put("message", "No se encontró el modulo con el ID: " + id);
+			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			response.put("message", "Error al actualizar el modulo: " + e.getMessage());
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 //    @PostMapping("/visto/{idmodulo}")
 //    public ResponseEntity<?> marcarModuloComoVisto(@PathVariable Integer idmodulo, @RequestBody Map<String, Object> payload) {
 //        Integer idusuario = (Integer) payload.get("idusuario");

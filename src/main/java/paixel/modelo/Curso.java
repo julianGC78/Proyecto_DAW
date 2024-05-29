@@ -41,24 +41,4 @@ public class Curso {
     @JoinColumn(name = "iddocente")
     private Docente docente;
 	
-//	@OneToMany(mappedBy = "curso", cascade = CascadeType.REMOVE)
-//	private List<PreguntaVO> preguntausuarios;
-//
-//	@OneToMany(mappedBy = "curso", cascade = CascadeType.REMOVE)
-//	private List<ModuloVO> modulo;
-//
-//	@OneToMany(mappedBy = "curso", cascade = CascadeType.REMOVE)
-//	private List<MatriculaVO> matriculausuario;
-
-//	public CursoVO(String titulo, String descripcion, List<PreguntaVO> preguntausuarios, List<ModuloVO> modulo,
-//			List<MatriculaVO> matriculausuario, UsuarioVO usuario) {
-//		super();
-//		this.titulo = titulo;
-//		this.descripcion = descripcion;
-//		this.preguntausuarios = preguntausuarios;
-//		this.modulo = modulo;
-//		this.matriculausuario = matriculausuario;
-//		this.usuario = usuario;
-//	}
-
 }

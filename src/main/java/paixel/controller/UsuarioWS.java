@@ -24,40 +24,39 @@ import paixel.jwt.JwtService;
 import paixel.modelo.User;
 import paixel.servicesImpl.ServiceUserImpl;
 
-@CrossOrigin(origins ="http://127.0.0.1:5500")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioWS {
-	
+
 	@Autowired
 	ServiceUserImpl serviceUserImpl;
 	@Autowired
 	JwtService jwtService;
 
 	Map<String, Object> response = new HashMap<String, Object>();
-	
-	
+
 	@PostMapping("/add")
 	public ResponseEntity<?> insert(@RequestBody User usuario) {
 		User insertarUsuario;
-		
-		try {			
-			insertarUsuario = serviceUserImpl.save(usuario);		
-		} catch (Exception e) {		
+
+		try {
+			insertarUsuario = serviceUserImpl.save(usuario);
+		} catch (Exception e) {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<User>(insertarUsuario, HttpStatus.OK);
-		 
+
 	}
-	
+
 	@GetMapping("/findById/{id}")
-	public ResponseEntity<?> findByid(@PathVariable Integer id) {  
+	public ResponseEntity<?> findByid(@PathVariable Integer id) {
 		Optional<User> usuario;
 		try {
-			 usuario = serviceUserImpl.findById(id); // Asegúrate de pasar el id correctamente aquí
-		        if (!usuario.isPresent()) {
-		            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		        }
+			usuario = serviceUserImpl.findById(id); // Asegúrate de pasar el id correctamente aquí
+			if (!usuario.isPresent()) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
 		} catch (Exception e) {
 			response.put("message", "Error al buscar usuarios: " + e.getMessage());
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -66,10 +65,10 @@ public class UsuarioWS {
 	}
 
 	@GetMapping("/findByEmail/{email}")
-	public ResponseEntity<?> findByEmail(String email) {  
+	public ResponseEntity<?> findByEmail(String email) {
 		Optional<User> usuario;
 		try {
-		usuario = serviceUserImpl.findByEmail(email);
+			usuario = serviceUserImpl.findByEmail(email);
 		} catch (Exception e) {
 			response.put("message", "Error al buscar usuarios: " + e.getMessage());
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -77,7 +76,6 @@ public class UsuarioWS {
 		return new ResponseEntity<User>(HttpStatus.OK);
 	}
 
-	
 	@GetMapping("/findAll")
 	public ResponseEntity<?> findAll() {
 		List<User> usuarios;
@@ -90,10 +88,9 @@ public class UsuarioWS {
 		return new ResponseEntity<List<User>>(usuarios, HttpStatus.OK);
 	}
 
-
 	@DeleteMapping("delete/{id}")
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
-		 System.out.println("Intentando eliminar el usuario con ID: " + id);
+		System.out.println("Intentando eliminar el usuario con ID: " + id);
 
 		try {
 			serviceUserImpl.deleteById(id);
@@ -105,50 +102,39 @@ public class UsuarioWS {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	@RestController
-	@RequestMapping("/usuario")
-	public class UserController {
 
-	    @Autowired
-	    private JwtService jwtService;
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody User userUpdates,
+			@RequestHeader("Authorization") String token) {
+		Map<String, Object> response = new HashMap<>();
+		try {
 
-	    @Autowired
-	    private ServiceUserImpl serviceUserImpl;
-
-	    @PutMapping("/update/{id}")
-	    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody User userUpdates, @RequestHeader("Authorization") String token) {
-	        Map<String, Object> response = new HashMap<>();
-	        try {
-
-	            User updatedUser = serviceUserImpl.updateUser(id, userUpdates);
-	            String newToken = jwtService.getToken(updatedUser);
-	            response.put("user", updatedUser);
-	            response.put("newToken", newToken);
-	            response.put("message", "Usuario actualizado con éxito");
-	            return new ResponseEntity<>(response, HttpStatus.OK);
-	        } catch (NoSuchElementException e) {
-	            response.put("message", "No se encontró el usuario con el ID: " + id);
-	            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-	        } catch (Exception e) {
-	            response.put("message", "Error al actualizar el usuario: " + e.getMessage());
-	            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-	        }
-	    }
-
+			User updatedUser = serviceUserImpl.updateUser(id, userUpdates);
+			String newToken = jwtService.getToken(updatedUser);
+			response.put("user", updatedUser);
+			response.put("newToken", newToken);
+			response.put("message", "Usuario actualizado con éxito");
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (NoSuchElementException e) {
+			response.put("message", "No se encontró el usuario con el ID: " + id);
+			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			response.put("message", "Error al actualizar el usuario: " + e.getMessage());
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
-	 @GetMapping("/count")
-	    public ResponseEntity<?> countUsers() {
-	        Map<String, Object> response = new HashMap<>();
-	        try {
-	            long userCount = serviceUserImpl.countUsers();
-	            response.put("userCount", userCount);
-	            return new ResponseEntity<>(response, HttpStatus.OK);
-	        } catch (Exception e) {
-	            response.put("message", "Error al contar los usuarios: " + e.getMessage());
-	            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-	        }
-	    }
 
-	
+	@GetMapping("/count")
+	public ResponseEntity<?> countUsers() {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			long userCount = serviceUserImpl.countUsers();
+			response.put("userCount", userCount);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("message", "Error al contar los usuarios: " + e.getMessage());
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 }

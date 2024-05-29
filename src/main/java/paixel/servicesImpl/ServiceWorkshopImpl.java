@@ -26,6 +26,9 @@ public class ServiceWorkshopImpl implements ServiceWorkshop {
 	@Autowired
 	private WorkshopRepository workshopRepository;
 	
+	@Autowired
+    private UserRepository userRepository;
+	
 
 	@Override
 	public <S extends Workshop> S save(S entity) {
@@ -195,8 +198,7 @@ public class ServiceWorkshopImpl implements ServiceWorkshop {
 	                    .collect(Collectors.toList());
 	}
 	
-	 @Autowired
-	    private UserRepository userRepository;
+	 
 	
 	public Workshop updateWorkshop(Integer id, Workshop workshopUpdates) {
         Optional<Workshop> workshopOptional = workshopRepository.findById(id);

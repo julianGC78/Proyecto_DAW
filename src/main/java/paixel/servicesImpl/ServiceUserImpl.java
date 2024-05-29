@@ -233,10 +233,9 @@ public class ServiceUserImpl implements ServiceUser {
 
 	   @Transactional
 	    public void deleteById(Integer id) {
-	        // Primero, eliminar las matriculas asociadas al usuario.
+
 	        matriculaRepository.deleteByUserId(id);
 	        
-	        // Luego, eliminar el usuario.
 	        userRepository.deleteById(id);
 	    }
 	   

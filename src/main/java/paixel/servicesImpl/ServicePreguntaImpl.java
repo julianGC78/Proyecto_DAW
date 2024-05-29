@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import paixel.modelo.Modulo;
@@ -20,11 +21,21 @@ import paixel.repository.ModuloRepository;
 import paixel.repository.PreguntaRepository;
 import paixel.repository.UserRepository;
 import paixel.services.ServicePregunta;
+
 @Service
 public class ServicePreguntaImpl implements ServicePregunta {
 
 	@Autowired
 	private PreguntaRepository preguntaRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private ModuloRepository moduloRepository;
+	
+	@Autowired
+    private JdbcTemplate jdbcTemplate;
 
 	@Override
 	public <S extends Pregunta> S save(S entity) {
@@ -179,45 +190,45 @@ public class ServicePreguntaImpl implements ServicePregunta {
 	public void deleteAll() {
 		preguntaRepository.deleteAll();
 	}
-	
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private ModuloRepository moduloRepository;
 	public List<Pregunta> findByModuloId(Integer idmodulo) {
-        List<Pregunta> preguntas = preguntaRepository.findByModulo_Idmodulo(idmodulo);
-        // Asegúrate de cargar la relación con usuario
-        for (Pregunta pregunta : preguntas) {
-            pregunta.getUsuario().getUsername(); // Fuerza la carga de la relación
-        }
-        return preguntas;
-    }
-	 public Pregunta updatePregunta(Integer id, Pregunta preguntaUpdates) {
-	        Optional<Pregunta> preguntaOptional = preguntaRepository.findById(id);
-	        if (!preguntaOptional.isPresent()) {
-	            throw new NoSuchElementException("No se encontró la pregunta con el ID: " + id);
-	        }
-	        Pregunta existingPregunta = preguntaOptional.get();
+		List<Pregunta> preguntas = preguntaRepository.findByModulo_Idmodulo(idmodulo);
+		// Asegúrate de cargar la relación con usuario
+		for (Pregunta pregunta : preguntas) {
+			pregunta.getUsuario().getUsername(); // Fuerza la carga de la relación
+		}
+		return preguntas;
+	}
 
-	        if (preguntaUpdates.getContenido() != null) {
-	            existingPregunta.setContenido(preguntaUpdates.getContenido());
-	        }
-	        if (preguntaUpdates.getFecha() != null) {
-	            existingPregunta.setFecha(preguntaUpdates.getFecha());
-	        }
-	        if (preguntaUpdates.getUsuario() != null) {
-	            User user = userRepository.findById(preguntaUpdates.getUsuario().getIduser())
-	                .orElseThrow(() -> new NoSuchElementException("Usuario no encontrado"));
-	            existingPregunta.setUsuario(user);
-	        }
-	        if (preguntaUpdates.getModulo() != null) {
-	            Modulo modulo = moduloRepository.findById(preguntaUpdates.getModulo().getIdmodulo())
-	                .orElseThrow(() -> new NoSuchElementException("Módulo no encontrado"));
-	            existingPregunta.setModulo(modulo);
-	        }
+	public Pregunta updatePregunta(Integer id, Pregunta preguntaUpdates) {
+		Optional<Pregunta> preguntaOptional = preguntaRepository.findById(id);
+		if (!preguntaOptional.isPresent()) {
+			throw new NoSuchElementException("No se encontró la pregunta con el ID: " + id);
+		}
+		Pregunta existingPregunta = preguntaOptional.get();
 
-	        return preguntaRepository.save(existingPregunta);
+		if (preguntaUpdates.getContenido() != null) {
+			existingPregunta.setContenido(preguntaUpdates.getContenido());
+		}
+		if (preguntaUpdates.getFecha() != null) {
+			existingPregunta.setFecha(preguntaUpdates.getFecha());
+		}
+		if (preguntaUpdates.getUsuario() != null) {
+			User user = userRepository.findById(preguntaUpdates.getUsuario().getIduser())
+					.orElseThrow(() -> new NoSuchElementException("Usuario no encontrado"));
+			existingPregunta.setUsuario(user);
+		}
+		if (preguntaUpdates.getModulo() != null) {
+			Modulo modulo = moduloRepository.findById(preguntaUpdates.getModulo().getIdmodulo())
+					.orElseThrow(() -> new NoSuchElementException("Módulo no encontrado"));
+			existingPregunta.setModulo(modulo);
+		}
+
+		return preguntaRepository.save(existingPregunta);
+	}
+	
+	 public int getTotalPreguntas() {
+	        String sql = "SELECT COUNT(*) FROM preguntas";
+	        return jdbcTemplate.queryForObject(sql, Integer.class);
 	    }
 }

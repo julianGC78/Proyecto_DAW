@@ -11,6 +11,7 @@ import paixel.modelo.Curso;
 import paixel.modelo.Docente;
 import paixel.modelo.Matricula;
 import paixel.modelo.Modulo;
+import paixel.modelo.Pregunta;
 import paixel.modelo.Role;
 import paixel.modelo.User;
 import paixel.modelo.Workshop;
@@ -18,6 +19,7 @@ import paixel.repository.CursoRepository;
 import paixel.repository.DocenteRepository;
 import paixel.repository.MatriculaRepository;
 import paixel.repository.ModuloRepository;
+import paixel.repository.PreguntaRepository;
 import paixel.repository.UserRepository;
 import paixel.repository.WorkshopRepository;
 
@@ -31,10 +33,12 @@ public class DataInitializer implements CommandLineRunner {
 	private final DocenteRepository docenteRepository;
 	private final MatriculaRepository matriculaRepository;
 	private final ModuloRepository moduloRepository;
+	private final PreguntaRepository preguntaRepository;
 
 	public DataInitializer(CursoRepository cursoRepository, UserRepository userRepository,
 			PasswordEncoder passwordEncoder, WorkshopRepository workshopRepository, DocenteRepository docenteRepository,
-			MatriculaRepository matriculaRepository, ModuloRepository moduloRepository) {
+			MatriculaRepository matriculaRepository, ModuloRepository moduloRepository,
+			PreguntaRepository preguntaRepository) {
 		this.cursoRepository = cursoRepository;
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
@@ -42,22 +46,29 @@ public class DataInitializer implements CommandLineRunner {
 		this.docenteRepository = docenteRepository;
 		this.matriculaRepository = matriculaRepository;
 		this.moduloRepository = moduloRepository;
+		this.preguntaRepository = preguntaRepository;
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
+		initAdmin();
 		initUsers();
 		initWorkshops();
 		initMatriculas();
+		initDocentes();
 		initCursos();
 		initModuloData();
+		initPreguntasData();
+
+	}
+
+	private void initAdmin() {
 
 		if (userRepository.findByUsername("admin").isEmpty()) {
 			User admin = User.builder().username("admin").password(passwordEncoder.encode("admin123"))
 					.email("admin@example.com").role(Role.ADMIN).matricula(true).build();
 			userRepository.save(admin);
 		}
-
 	}
 
 	private void initUsers() {
@@ -218,7 +229,7 @@ public class DataInitializer implements CommandLineRunner {
 		Docente docente3 = getDocenteById(3);// Obtén el docente por su ID
 		User usuario = getUserById(1); // Obtén el usuario por su ID
 
-		createCurso("Diseño Gráfico", "Curso avanzado de Diseño Gráfico", docente1,
+		createCurso("Diseño Gráfico", "En este curso avanzado, dominarás técnicas avanzadas de Adobe Photoshop, Illustrator e InDesign para crear gráficos vectoriales, editar imágenes y diseñar publicaciones profesionales. Aprenderás principios avanzados de teoría del color, tipografía y composición, y aplicarás estas habilidades en proyectos prácticos de identidad visual y campañas publicitarias.", docente1,
 				"http://127.0.0.1:5500/images/cursos/Diseño_grafico.webp", usuario);
 		createCurso("Photoshop",
 				"Domina Adobe Photoshop, desde conceptos básicos hasta técnicas avanzadas. Este curso te equipa con las habilidades necesarias para editar, manipular y transformar fotografías a un nivel profesional. Aprende a crear composiciones impresionantes, utilizar herramientas de retoque y explorar la amplia gama de funciones de Photoshop para proyectos creativos y comerciales.",
@@ -413,4 +424,115 @@ public class DataInitializer implements CommandLineRunner {
 		}
 	}
 
+	public void initPreguntasData() {
+		// Obtener los módulos de los cursos
+		Modulo moduloDG1 = moduloRepository.findById(1).orElseThrow(() -> new RuntimeException("Módulo no encontrado"));
+		Modulo moduloPS1 = moduloRepository.findById(7).orElseThrow(() -> new RuntimeException("Módulo no encontrado"));
+		Modulo moduloDW1 = moduloRepository.findById(13)
+				.orElseThrow(() -> new RuntimeException("Módulo no encontrado"));
+		Modulo moduloUIUX1 = moduloRepository.findById(19)
+				.orElseThrow(() -> new RuntimeException("Módulo no encontrado"));
+		Modulo moduloLB1 = moduloRepository.findById(25)
+				.orElseThrow(() -> new RuntimeException("Módulo no encontrado"));
+		Modulo moduloIL1 = moduloRepository.findById(31)
+				.orElseThrow(() -> new RuntimeException("Módulo no encontrado"));
+		Modulo modulo3DA1 = moduloRepository.findById(37)
+				.orElseThrow(() -> new RuntimeException("Módulo no encontrado"));
+
+		User usuario1 = userRepository.findById(1).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+		// Diseño Gráfico
+		savePreguntaIfNotExist(new Pregunta("¿Qué es el diseño gráfico?", LocalDate.now(), usuario1, moduloDG1));
+		savePreguntaIfNotExist(
+				new Pregunta("¿Cuáles son los principios básicos del diseño?", LocalDate.now(), usuario1, moduloDG1));
+		savePreguntaIfNotExist(new Pregunta("¿Cómo influye la teoría del color en el diseño gráfico?", LocalDate.now(),
+				usuario1, moduloDG1));
+		savePreguntaIfNotExist(new Pregunta("¿Qué papel juega la tipografía en el diseño gráfico?", LocalDate.now(),
+				usuario1, moduloDG1));
+
+		// Photoshop
+		savePreguntaIfNotExist(new Pregunta("¿Cómo uso las capas en Photoshop?", LocalDate.now(), usuario1, moduloPS1));
+		savePreguntaIfNotExist(
+				new Pregunta("¿Qué son las máscaras en Photoshop?", LocalDate.now(), usuario1, moduloPS1));
+
+		// Desarrollo Web
+		savePreguntaIfNotExist(new Pregunta("¿Qué es HTML?", LocalDate.now(), usuario1, moduloDW1));
+		savePreguntaIfNotExist(new Pregunta("¿Para qué sirve CSS?", LocalDate.now(), usuario1, moduloDW1));
+		savePreguntaIfNotExist(
+				new Pregunta("¿Qué es JavaScript y cómo se utiliza?", LocalDate.now(), usuario1, moduloDW1));
+		savePreguntaIfNotExist(
+				new Pregunta("¿Cómo puedo hacer una página web responsive?", LocalDate.now(), usuario1, moduloDW1));
+		savePreguntaIfNotExist(new Pregunta("¿Qué es un framework y cuál debo usar para desarrollo web?",
+				LocalDate.now(), usuario1, moduloDW1));
+		savePreguntaIfNotExist(new Pregunta("¿Cómo se realiza la integración de APIs en un sitio web?", LocalDate.now(),
+				usuario1, moduloDW1));
+		savePreguntaIfNotExist(new Pregunta("¿Qué es el DOM y cómo se manipula con JavaScript?", LocalDate.now(),
+				usuario1, moduloDW1));
+		savePreguntaIfNotExist(new Pregunta("¿Cuáles son las mejores prácticas para el SEO en desarrollo web?",
+				LocalDate.now(), usuario1, moduloDW1));
+		savePreguntaIfNotExist(new Pregunta("¿Qué es Git y cómo se utiliza en proyectos de desarrollo web?",
+				LocalDate.now(), usuario1, moduloDW1));
+
+		// UI/UX
+		savePreguntaIfNotExist(
+				new Pregunta("¿Qué es la experiencia de usuario?", LocalDate.now(), usuario1, moduloUIUX1));
+		savePreguntaIfNotExist(new Pregunta("¿Cuáles son las mejores prácticas en diseño UI?", LocalDate.now(),
+				usuario1, moduloUIUX1));
+		savePreguntaIfNotExist(new Pregunta("¿Cómo se realiza una investigación de usuarios efectiva?", LocalDate.now(),
+				usuario1, moduloUIUX1));
+		savePreguntaIfNotExist(new Pregunta("¿Qué herramientas se utilizan para el prototipado y wireframing?",
+				LocalDate.now(), usuario1, moduloUIUX1));
+
+		// Logotipos y Branding
+		savePreguntaIfNotExist(new Pregunta("¿Qué es un logotipo efectivo?", LocalDate.now(), usuario1, moduloLB1));
+		savePreguntaIfNotExist(
+				new Pregunta("¿Cómo se crea una estrategia de marca?", LocalDate.now(), usuario1, moduloLB1));
+		savePreguntaIfNotExist(new Pregunta("¿Cuál es la diferencia entre un logotipo y una marca?", LocalDate.now(),
+				usuario1, moduloLB1));
+		savePreguntaIfNotExist(new Pregunta("¿Qué características debe tener un buen logotipo?", LocalDate.now(),
+				usuario1, moduloLB1));
+		savePreguntaIfNotExist(new Pregunta("¿Cómo influye el color en el diseño de un logotipo?", LocalDate.now(),
+				usuario1, moduloLB1));
+		savePreguntaIfNotExist(new Pregunta("¿Qué importancia tiene la tipografía en un logotipo?", LocalDate.now(),
+				usuario1, moduloLB1));
+		savePreguntaIfNotExist(new Pregunta("¿Cómo se puede modernizar un logotipo sin perder su esencia?",
+				LocalDate.now(), usuario1, moduloLB1));
+
+		// Ilustración
+		savePreguntaIfNotExist(
+				new Pregunta("¿Qué herramientas necesito para ilustrar?", LocalDate.now(), usuario1, moduloIL1));
+
+		// 3D y Animación
+		savePreguntaIfNotExist(
+				new Pregunta("¿Qué software es mejor para animación 3D?", LocalDate.now(), usuario1, modulo3DA1));
+		savePreguntaIfNotExist(
+				new Pregunta("¿Cómo se hace el rigging de un modelo 3D?", LocalDate.now(), usuario1, modulo3DA1));
+		savePreguntaIfNotExist(new Pregunta("¿Qué es la texturización en 3D y por qué es importante?", LocalDate.now(),
+				usuario1, modulo3DA1));
+		savePreguntaIfNotExist(
+				new Pregunta("¿Cómo se crean materiales realistas en 3D?", LocalDate.now(), usuario1, modulo3DA1));
+		savePreguntaIfNotExist(
+				new Pregunta("¿Qué es el renderizado y cuáles son sus tipos?", LocalDate.now(), usuario1, modulo3DA1));
+		savePreguntaIfNotExist(
+				new Pregunta("¿Cómo se puede optimizar el renderizado en 3D?", LocalDate.now(), usuario1, modulo3DA1));
+		savePreguntaIfNotExist(new Pregunta("¿Qué es la animación de personajes y cuáles son sus principios básicos?",
+				LocalDate.now(), usuario1, modulo3DA1));
+		savePreguntaIfNotExist(
+				new Pregunta("¿Cómo se usa el motion capture en animación 3D?", LocalDate.now(), usuario1, modulo3DA1));
+		savePreguntaIfNotExist(
+				new Pregunta("¿Qué es la iluminación global en 3D?", LocalDate.now(), usuario1, modulo3DA1));
+		savePreguntaIfNotExist(new Pregunta("¿Cuáles son los diferentes tipos de cámaras usadas en 3D y animación?",
+				LocalDate.now(), usuario1, modulo3DA1));
+		savePreguntaIfNotExist(new Pregunta("¿Cómo se crea un storyboard para un proyecto de animación?",
+				LocalDate.now(), usuario1, modulo3DA1));
+		savePreguntaIfNotExist(
+				new Pregunta("¿Qué es la cinemática inversa en animación 3D?", LocalDate.now(), usuario1, modulo3DA1));
+
+	}
+
+	private void savePreguntaIfNotExist(Pregunta pregunta) {
+		if (preguntaRepository.findByContenido(pregunta.getContenido()).isEmpty()) {
+			preguntaRepository.save(pregunta);
+		}
+	}
 }

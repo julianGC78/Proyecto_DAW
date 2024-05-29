@@ -24,7 +24,7 @@ import paixel.jwt.JwtService;
 import paixel.modelo.Docente;
 import paixel.servicesImpl.ServiceDocenteImpl;
 
-@CrossOrigin(origins ="http://127.0.0.1:5500")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RestController
 @RequestMapping("/docente")
 public class DocenteWS {
@@ -32,30 +32,32 @@ public class DocenteWS {
 	@Autowired
 	ServiceDocenteImpl serviceDocenteImpl;
 	
+	@Autowired
+	private JwtService jwtService;
+
 	Map<String, Object> response = new HashMap<String, Object>();
-	
-	
+
 	@PostMapping("/add")
 	public ResponseEntity<?> insert(@RequestBody Docente usuario) {
 		Docente insertarDocente;
-		
-		try {			
-			insertarDocente = serviceDocenteImpl.save(usuario);		
-		} catch (Exception e) {		
+
+		try {
+			insertarDocente = serviceDocenteImpl.save(usuario);
+		} catch (Exception e) {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<Docente>(insertarDocente, HttpStatus.OK);
-		 
+
 	}
-	
+
 	@GetMapping("/findById/{id}")
-	public ResponseEntity<?> findByid(@PathVariable Integer id) {  
+	public ResponseEntity<?> findByid(@PathVariable Integer id) {
 		Optional<Docente> docente;
 		try {
 			docente = serviceDocenteImpl.findById(id); // Asegúrate de pasar el id correctamente aquí
-		        if (!docente.isPresent()) {
-		            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		        }
+			if (!docente.isPresent()) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
 		} catch (Exception e) {
 			response.put("message", "Error al buscar usuarios: " + e.getMessage());
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -64,7 +66,6 @@ public class DocenteWS {
 
 	}
 
-	
 	@GetMapping("/findAll")
 	public ResponseEntity<?> findAll() {
 		List<Docente> docentes;
@@ -77,10 +78,9 @@ public class DocenteWS {
 		return new ResponseEntity<List<Docente>>(docentes, HttpStatus.OK);
 	}
 
-
 	@DeleteMapping("delete/{id}")
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
-		 System.out.println("Intentando eliminar el usuario con ID: " + id);
+		System.out.println("Intentando eliminar el usuario con ID: " + id);
 
 		try {
 			serviceDocenteImpl.deleteById(id);
@@ -92,25 +92,26 @@ public class DocenteWS {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	 @Autowired
-	    private JwtService jwtService;
 
-	    @PutMapping("/update/{id}")
-	    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Docente docenteUpdates, @RequestHeader("Authorization") String token) {
-	        Map<String, Object> response = new HashMap<>();
-	        try {
-	            Docente updatedDocente = serviceDocenteImpl.updateDocente(id, docenteUpdates);
-	            
-	            response.put("docente", updatedDocente);
-	          
-	            response.put("message", "Docente actualizado con éxito");
-	            return new ResponseEntity<>(response, HttpStatus.OK);
-	        } catch (NoSuchElementException e) {
-	            response.put("message", "No se encontró el docente con el ID: " + id);
-	            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-	        } catch (Exception e) {
-	            response.put("message", "Error al actualizar el docente: " + e.getMessage());
-	            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-	        }
-	    }
+	
+
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Docente docenteUpdates,
+			@RequestHeader("Authorization") String token) {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			Docente updatedDocente = serviceDocenteImpl.updateDocente(id, docenteUpdates);
+
+			response.put("docente", updatedDocente);
+
+			response.put("message", "Docente actualizado con éxito");
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (NoSuchElementException e) {
+			response.put("message", "No se encontró el docente con el ID: " + id);
+			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			response.put("message", "Error al actualizar el docente: " + e.getMessage());
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }
