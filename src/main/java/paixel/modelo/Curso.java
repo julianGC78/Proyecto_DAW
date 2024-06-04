@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "cursos")
 public class Curso {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idcurso;
@@ -41,4 +42,7 @@ public class Curso {
     @JoinColumn(name = "iddocente")
     private Docente docente;
 	
+	public Curso(String string, String string2, User usuario1, Docente docente1) {
+		
+	}
 }

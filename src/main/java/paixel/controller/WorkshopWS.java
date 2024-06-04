@@ -1,5 +1,9 @@
 package paixel.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +12,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,7 +24,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import paixel.modelo.User;
 import paixel.modelo.Workshop;
@@ -38,27 +45,84 @@ public class WorkshopWS {
 
 	Map<String, Object> response = new HashMap<String, Object>();
 
+//	@PostMapping("/add")
+//	public ResponseEntity<?> addWorkshop(@RequestBody Map<String, Object> workshopData) {
+//		String contenido = (String) workshopData.get("contenido");
+//		String descripcion = (String) workshopData.get("descripcion");
+//		LocalDate fecha = LocalDate.parse((String) workshopData.get("fecha"));
+//		Integer idUsuario = Integer.parseInt((String) workshopData.get("idusuario"));
+//
+//		// Buscar el usuario por id
+//		User user = serviceUserImpl.findById(idUsuario)
+//				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+//
+//		// Crear y guardar el workshop
+//		Workshop workshop = new Workshop();
+//		workshop.setContenido(contenido);
+//		workshop.setDescripcion(descripcion);
+//		workshop.setFecha(fecha);
+//		workshop.setUsuario(user);
+//
+//		serviceWorkshopImpl.save(workshop);
+//		return new ResponseEntity<>(workshop, HttpStatus.OK);
+//	}
+	
 	@PostMapping("/add")
-	public ResponseEntity<?> addWorkshop(@RequestBody Map<String, Object> workshopData) {
-		String contenido = (String) workshopData.get("contenido");
-		String descripcion = (String) workshopData.get("descripcion");
-		LocalDate fecha = LocalDate.parse((String) workshopData.get("fecha"));
-		Integer idUsuario = Integer.parseInt((String) workshopData.get("idusuario"));
+	public ResponseEntity<?> addWorkshop(
+	        @RequestParam("contenido") String contenido,
+	        @RequestParam("descripcion") String descripcion,
+	        @RequestParam("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
+	        @RequestParam("idusuario") Integer idUsuario,
+	        @RequestParam("imagen") MultipartFile imagen) {
+	    
+	    Map<String, Object> response = new HashMap<>();
+	    try {
+	        // Buscar el usuario por id
+	        User user = serviceUserImpl.findById(idUsuario)
+	                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-		// Buscar el usuario por id
-		User user = serviceUserImpl.findById(idUsuario)
-				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+	        // Crear y guardar el workshop
+	        Workshop workshop = new Workshop();
+	        workshop.setContenido(contenido);
+	        workshop.setDescripcion(descripcion);
+	        workshop.setFecha(fecha);
+	        workshop.setUsuario(user);
 
-		// Crear y guardar el workshop
-		Workshop workshop = new Workshop();
-		workshop.setContenido(contenido);
-		workshop.setDescripcion(descripcion);
-		workshop.setFecha(fecha);
-		workshop.setUsuario(user);
+	        // Guardar la imagen en el sistema de archivos
+	        String imagenPath = saveImage(imagen);
+	        // Aquí puedes añadir la lógica para guardar la ruta de la imagen si tienes un campo para ello en la entidad Workshop
+	        // Por ejemplo: workshop.setImagePath(imagenPath);
 
-		serviceWorkshopImpl.save(workshop);
-		return new ResponseEntity<>(workshop, HttpStatus.OK);
+	        Workshop nuevoWorkshop = serviceWorkshopImpl.save(workshop);
+	        return new ResponseEntity<>(nuevoWorkshop, HttpStatus.OK);
+	    } catch (Exception e) {
+	        response.put("message", "Error al añadir el workshop: " + e.getMessage());
+	        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 	}
+
+	private String saveImage(MultipartFile imagen) throws IOException {
+	    String folder = "path/to/save/images/";
+	    Path directory = (Path) Paths.get(folder);
+
+	    // Crear el directorio si no existe
+	    if (!Files.exists(directory)) {
+	        Files.createDirectories(directory);
+	    }
+
+	    String filename = imagen.getOriginalFilename();
+	    Path path = directory.resolve(filename);
+
+	    // Asegurarse de que el archivo no exista para evitar sobrescribirlo
+	    if (Files.exists(path)) {
+	        throw new IOException("El archivo ya existe: " + filename);
+	    }
+
+	    byte[] bytes = imagen.getBytes();
+	    Files.write(path, bytes);
+	    return path.toString();
+	}
+
 
 	@GetMapping("/findAll")
 	public ResponseEntity<?> findAll() {

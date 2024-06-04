@@ -70,4 +70,20 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+	public User(String username, String apellidos, String password, String email, String genero, String dni,
+			LocalDate fechaNacimiento, String localidad, boolean matricula, Role role) {
+		super();
+		this.username = username;
+		this.apellidos = apellidos;
+		this.password = password;
+		this.email = email;
+		this.genero = genero;
+		this.dni = dni;
+		this.fechaNacimiento = fechaNacimiento;
+		this.localidad = localidad;
+		this.matricula = matricula;
+		this.role = role;
+	}
+	
+	
 }

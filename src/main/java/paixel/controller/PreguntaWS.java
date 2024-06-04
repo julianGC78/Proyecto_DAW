@@ -62,19 +62,16 @@ public class PreguntaWS {
 			Integer idModulo = (Integer) preguntaData.get("idmodulo");
 			String fechaStr = (String) preguntaData.get("fecha");
 
-			// Validar que los campos no sean nulos
 			if (contenido == null || idUsuario == null || idModulo == null || fechaStr == null) {
 				response.put("message", "Campos requeridos faltantes");
 				return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 			}
 
-			// Buscar el usuario y el módulo por sus ids
 			User usuario = userServiceImpl.findById(idUsuario)
 					.orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + idUsuario));
 			Modulo modulo = moduloServiceImpl.findById(idModulo)
 					.orElseThrow(() -> new RuntimeException("Módulo no encontrado: " + idModulo));
 
-			// Parsear la fecha proporcionada
 			LocalDate fecha;
 			try {
 				fecha = LocalDate.parse(fechaStr);
@@ -83,7 +80,6 @@ public class PreguntaWS {
 				return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 			}
 
-			// Crear y guardar la pregunta
 			Pregunta pregunta = new Pregunta();
 			pregunta.setContenido(contenido);
 			pregunta.setFecha(fecha); // Usar la fecha proporcionada

@@ -18,22 +18,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name="matriculas")
+@Table(name = "matriculas")
 public class Matricula {
 
-	 @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Integer idPago;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer idPago;
 
-	    @ManyToOne
-	    @JoinColumn(name = "iduser", referencedColumnName = "iduser")
-	    private User user;  
+	@ManyToOne
+	@JoinColumn(name = "iduser", referencedColumnName = "iduser")
+	private User user;
 
-	    private boolean pagado;  
-	    private LocalDate fechaPago;  
-	    
-	    @Column(nullable = false)
-	    private boolean diplomaOtorgado = false;
-	  
-	    
+	private boolean pagado;
+	private LocalDate fechaPago;
+
+	@Column(nullable = false)
+	private boolean diplomaOtorgado = false;
+
+	public Matricula(User usuario1, LocalDate of, boolean b, boolean c) {
+		// TODO Auto-generated constructor stub
+	}
 }
