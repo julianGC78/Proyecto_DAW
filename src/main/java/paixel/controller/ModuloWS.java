@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import paixel.modelo.Curso;
@@ -39,29 +40,40 @@ public class ModuloWS {
 	Map<String, Object> response = new HashMap<String, Object>();
 
 	@PostMapping("/add")
-	public ResponseEntity<?> addModulo(@RequestBody Map<String, Object> moduloData) {
-		String titulo = (String) moduloData.get("titulo");
-		String tiempo = (String) moduloData.get("tiempo");
-		String descripcion = (String) moduloData.get("descripcion");
-		String recurso = (String) moduloData.get("recurso");
-		int orden = Integer.parseInt((String) moduloData.get("orden"));
-		Integer idCurso = Integer.parseInt((String) moduloData.get("idcurso"));
+	public ResponseEntity<?> addModulo(
+	    @RequestParam("titulo") String titulo,
+	    @RequestParam("tiempo") String tiempo,
+	    @RequestParam("descripcion") String descripcion,
+	    @RequestParam("orden") int orden,
+	    @RequestParam("idcurso") Integer idCurso,
+	    @RequestParam("recurso") String recurso) {
 
-		// Buscar el curso por id
-		Curso curso = serviceCursoImpl.findById(idCurso).orElseThrow(() -> new RuntimeException("Curso no encontrado"));
+	    Map<String, Object> response = new HashMap<>();
+	    try {
+	        // Buscar el curso por id
+	        Curso curso = serviceCursoImpl.findById(idCurso)
+	                .orElseThrow(() -> new RuntimeException("Curso no encontrado"));
 
-		// Crear y guardar el modulo
-		Modulo modulo = new Modulo();
-		modulo.setTitulo(titulo);
-		modulo.setTiempo(tiempo);
-		modulo.setDescripcion(descripcion);
-		modulo.setRecurso(recurso);
-		modulo.setOrden(orden);
-		modulo.setCurso(curso);
+	        // Crear y guardar el modulo
+	        Modulo modulo = new Modulo();
+	        modulo.setTitulo(titulo);
+	        modulo.setTiempo(tiempo);
+	        modulo.setDescripcion(descripcion);
+	        modulo.setRecurso("/video/" + recurso); // Construir la ruta completa
+	        modulo.setOrden(orden);
+	        modulo.setCurso(curso);
 
-		serviceModuloImpl.save(modulo);
-		return new ResponseEntity<>(modulo, HttpStatus.OK);
+	        serviceModuloImpl.save(modulo);
+	        return new ResponseEntity<>(modulo, HttpStatus.OK);
+	    } catch (RuntimeException e) {
+	        response.put("message", e.getMessage());
+	        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	    } catch (Exception e) {
+	        response.put("message", "Error al añadir el módulo");
+	        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	    }
 	}
+
 
 	@GetMapping("/findById/{idmodulo}")
 	public ResponseEntity<?> findById(@PathVariable Integer idmodulo) {

@@ -1,6 +1,7 @@
 package paixel.controller;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
@@ -53,50 +54,53 @@ public class PreguntaWS {
 
 	private Map<String, Object> response = new HashMap<>();
 
-	@PostMapping("/add")
-	public ResponseEntity<?> insert(@RequestBody Map<String, Object> preguntaData) {
-		Map<String, Object> response = new HashMap<>();
-		try {
-			String contenido = (String) preguntaData.get("contenido");
-			Integer idUsuario = (Integer) preguntaData.get("idusuario");
-			Integer idModulo = (Integer) preguntaData.get("idmodulo");
-			String fechaStr = (String) preguntaData.get("fecha");
+	 @PostMapping("/add")
+	    public ResponseEntity<?> insert(@RequestBody Map<String, Object> preguntaData) {
+	        Map<String, Object> response = new HashMap<>();
 
-			if (contenido == null || idUsuario == null || idModulo == null || fechaStr == null) {
-				response.put("message", "Campos requeridos faltantes");
-				return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-			}
+	        try {
+	            String contenido = (String) preguntaData.get("contenido");
+	            Integer idUsuario = (Integer) preguntaData.get("idusuario");
+	            Integer idModulo = (Integer) preguntaData.get("idmodulo");
+	            String fechaStr = (String) preguntaData.get("fecha");
 
-			User usuario = userServiceImpl.findById(idUsuario)
-					.orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + idUsuario));
-			Modulo modulo = moduloServiceImpl.findById(idModulo)
-					.orElseThrow(() -> new RuntimeException("Módulo no encontrado: " + idModulo));
+	            if (contenido == null || idUsuario == null || idModulo == null || fechaStr == null) {
+	                response.put("message", "Campos requeridos faltantes");
+	                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	            }
 
-			LocalDate fecha;
-			try {
-				fecha = LocalDate.parse(fechaStr);
-			} catch (DateTimeParseException e) {
-				response.put("message", "Formato de fecha inválido");
-				return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-			}
+	            User usuario = userServiceImpl.findById(idUsuario)
+	                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + idUsuario));
+	            Modulo modulo = moduloServiceImpl.findById(idModulo)
+	                    .orElseThrow(() -> new RuntimeException("Módulo no encontrado: " + idModulo));
 
-			Pregunta pregunta = new Pregunta();
-			pregunta.setContenido(contenido);
-			pregunta.setFecha(fecha); // Usar la fecha proporcionada
-			pregunta.setUsuario(usuario);
-			pregunta.setModulo(modulo);
+	            LocalDateTime fecha;
+	            try {
+	                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+	                fecha = LocalDateTime.parse(fechaStr, formatter);
+	            } catch (DateTimeParseException e) {
+	                response.put("message", "Formato de fecha inválido");
+	                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	            }
 
-			Pregunta nuevaPregunta = servicePreguntaImpl.save(pregunta);
-			return new ResponseEntity<>(nuevaPregunta, HttpStatus.OK);
-		} catch (RuntimeException e) {
-			response.put("message", e.getMessage());
-			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			response.put("message", "Error al insertar la pregunta");
-			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+	            Pregunta pregunta = new Pregunta();
+	            pregunta.setContenido(contenido);
+	            pregunta.setFecha(fecha); // Usar la fecha proporcionada
+	            pregunta.setUsuario(usuario);
+	            pregunta.setModulo(modulo);
 
+	            Pregunta nuevaPregunta = servicePreguntaImpl.save(pregunta);
+	            return new ResponseEntity<>(nuevaPregunta, HttpStatus.OK);
+	        } catch (RuntimeException e) {
+	            response.put("message", e.getMessage());
+	            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	        } catch (Exception e) {
+	            response.put("message", "Error al insertar la pregunta");
+	            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
+	    }
+	 
+	 
 	@GetMapping("/findById/{id}")
 	public ResponseEntity<?> findById(@PathVariable Integer id) {
 		Optional<Pregunta> pregunta;
@@ -161,7 +165,7 @@ public class PreguntaWS {
 				preguntaUpdates.setContenido((String) preguntaData.get("contenido"));
 			}
 			if (preguntaData.get("fecha") != null) {
-				preguntaUpdates.setFecha(LocalDate.parse((String) preguntaData.get("fecha")));
+				preguntaUpdates.setFecha(LocalDateTime.parse((String) preguntaData.get("fecha")));
 			}
 			if (preguntaData.get("idusuario") != null) {
 				Integer idUsuario = Integer.parseInt((String) preguntaData.get("idusuario"));

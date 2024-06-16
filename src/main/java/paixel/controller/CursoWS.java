@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import paixel.modelo.Curso;
@@ -62,38 +64,38 @@ public class CursoWS {
 	Map<String, Object> response = new HashMap<String, Object>();
 
 	@PostMapping("/add")
-	public ResponseEntity<?> addCurso(@RequestBody Map<String, Object> cursoData) {
-		Map<String, Object> response = new HashMap<>();
-		try {
-			String titulo = (String) cursoData.get("titulo");
-			String descripcion = (String) cursoData.get("descripcion");
-			String recurso = (String) cursoData.get("recurso");
-			Integer idUsuario = Integer.parseInt((String) cursoData.get("idusuario"));
-			Integer idDocente = Integer.parseInt((String) cursoData.get("iddocente"));
+	public ResponseEntity<?> addCurso(
+	    @RequestParam("titulo") String titulo,
+	    @RequestParam("descripcion") String descripcion,
+	    @RequestParam("idusuario") Integer idUsuario,
+	    @RequestParam("iddocente") Integer idDocente,
+	    @RequestParam("recurso") String recurso) {
 
-			// Buscar el usuario y el docente por sus ids
-			User user = serviceUserImpl.findById(idUsuario)
-					.orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + idUsuario));
-			Docente docente = serviceDocenteImpl.findById(idDocente)
-					.orElseThrow(() -> new RuntimeException("Docente no encontrado: " + idDocente));
+	    Map<String, Object> response = new HashMap<>();
+	    try {
+	        // Buscar el usuario y el docente por sus ids
+	        User user = serviceUserImpl.findById(idUsuario)
+	                .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + idUsuario));
+	        Docente docente = serviceDocenteImpl.findById(idDocente)
+	                .orElseThrow(() -> new RuntimeException("Docente no encontrado: " + idDocente));
 
-			// Crear y guardar el curso
-			Curso curso = new Curso();
-			curso.setTitulo(titulo);
-			curso.setDescripcion(descripcion);
-			curso.setRecurso(recurso);
-			curso.setUser(user);
-			curso.setDocente(docente);
+	        // Crear y guardar el curso
+	        Curso curso = new Curso();
+	        curso.setTitulo(titulo);
+	        curso.setDescripcion(descripcion);
+	        curso.setRecurso("/images/cursos/" + recurso); // Construir la ruta completa
+	        curso.setUser(user);
+	        curso.setDocente(docente);
 
-			serviceCursoImpl.save(curso);
-			return new ResponseEntity<>(curso, HttpStatus.OK);
-		} catch (RuntimeException e) {
-			response.put("message", e.getMessage());
-			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			response.put("message", "Error al añadir el curso");
-			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-		}
+	        serviceCursoImpl.save(curso);
+	        return new ResponseEntity<>(curso, HttpStatus.OK);
+	    } catch (RuntimeException e) {
+	        response.put("message", e.getMessage());
+	        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	    } catch (Exception e) {
+	        response.put("message", "Error al añadir el curso");
+	        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	    }
 	}
 
 	@GetMapping("/findAll")
@@ -121,6 +123,21 @@ public class CursoWS {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<>(curso.get(), HttpStatus.OK);
+	}
+	
+	@DeleteMapping("delete/{id}")
+	public ResponseEntity<?> delete(@PathVariable Integer id) {
+		System.out.println("Intentando eliminar el curso con ID: " + id);
+
+		try {
+			serviceCursoImpl.deleteById(id);
+			response.put("message", "El curso se borro");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+
+		} catch (Exception e) {
+			response.put("message", e.getMessage());
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@PutMapping("/update/{id}")

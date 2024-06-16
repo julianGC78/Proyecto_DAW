@@ -1,5 +1,8 @@
 package paixel.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +21,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import paixel.jwt.JwtService;
 import paixel.modelo.Docente;
@@ -37,18 +42,44 @@ public class DocenteWS {
 
 	Map<String, Object> response = new HashMap<String, Object>();
 
+//	@PostMapping("/add")
+//	public ResponseEntity<?> insert(@RequestBody Docente usuario) {
+//		Docente insertarDocente;
+//		try {
+//			insertarDocente = serviceDocenteImpl.save(usuario);
+//		} catch (Exception e) {
+//			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//		return new ResponseEntity<Docente>(insertarDocente, HttpStatus.OK);
+//
+//	}
 	@PostMapping("/add")
-	public ResponseEntity<?> insert(@RequestBody Docente usuario) {
-		Docente insertarDocente;
+	public ResponseEntity<?> insert(
+	    @RequestParam("username") String username,
+	    @RequestParam("especialidad") String especialidad,
+	    @RequestParam("descripcion") String descripcion,
+	    @RequestParam("recurso") String recurso) {
 
-		try {
-			insertarDocente = serviceDocenteImpl.save(usuario);
-		} catch (Exception e) {
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		return new ResponseEntity<Docente>(insertarDocente, HttpStatus.OK);
+	    Map<String, Object> response = new HashMap<>();
+	    try {
+	        // Crear el objeto Docente y guardar la URL del archivo
+	        Docente docente = new Docente();
+	        docente.setUsername(username);
+	        docente.setEspecialidad(especialidad);
+	        docente.setDescripcion(descripcion);
+	        docente.setRecurso("http://127.0.0.1:5500/images/docentes/" + recurso); // Construir la ruta completa
 
+	        // Guardar el objeto Docente en la base de datos
+	        Docente insertarDocente = serviceDocenteImpl.save(docente);
+	        return new ResponseEntity<Docente>(insertarDocente, HttpStatus.OK);
+
+	    } catch (Exception e) {
+	        e.printStackTrace(); // Imprimir el stack trace de la excepción para más detalles
+	        response.put("mensaje", "Error al añadir el docente: " + e.getMessage());
+	        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 	}
+
 
 	@GetMapping("/findById/{id}")
 	public ResponseEntity<?> findByid(@PathVariable Integer id) {

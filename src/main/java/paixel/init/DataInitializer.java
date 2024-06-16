@@ -1,6 +1,7 @@
 package paixel.init;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.boot.CommandLineRunner;
@@ -442,91 +443,91 @@ public class DataInitializer implements CommandLineRunner {
 		User usuario1 = userRepository.findById(1).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
 		// Diseño Gráfico
-		savePreguntaIfNotExist(new Pregunta("¿Qué es el diseño gráfico?", LocalDate.now(), usuario1, moduloDG1));
+		savePreguntaIfNotExist(new Pregunta("¿Qué es el diseño gráfico?", LocalDateTime.now(), usuario1, moduloDG1));
 		savePreguntaIfNotExist(
-				new Pregunta("¿Cuáles son los principios básicos del diseño?", LocalDate.now(), usuario1, moduloDG1));
-		savePreguntaIfNotExist(new Pregunta("¿Cómo influye la teoría del color en el diseño gráfico?", LocalDate.now(),
+				new Pregunta("¿Cuáles son los principios básicos del diseño?", LocalDateTime.now(), usuario1, moduloDG1));
+		savePreguntaIfNotExist(new Pregunta("¿Cómo influye la teoría del color en el diseño gráfico?", LocalDateTime.now(),
 				usuario1, moduloDG1));
-		savePreguntaIfNotExist(new Pregunta("¿Qué papel juega la tipografía en el diseño gráfico?", LocalDate.now(),
+		savePreguntaIfNotExist(new Pregunta("¿Qué papel juega la tipografía en el diseño gráfico?", LocalDateTime.now(),
 				usuario1, moduloDG1));
 
 		// Photoshop
-		savePreguntaIfNotExist(new Pregunta("¿Cómo uso las capas en Photoshop?", LocalDate.now(), usuario1, moduloPS1));
+		savePreguntaIfNotExist(new Pregunta("¿Cómo uso las capas en Photoshop?", LocalDateTime.now(), usuario1, moduloPS1));
 		savePreguntaIfNotExist(
-				new Pregunta("¿Qué son las máscaras en Photoshop?", LocalDate.now(), usuario1, moduloPS1));
+				new Pregunta("¿Qué son las máscaras en Photoshop?", LocalDateTime.now(), usuario1, moduloPS1));
 
 		// Desarrollo Web
-		savePreguntaIfNotExist(new Pregunta("¿Qué es HTML?", LocalDate.now(), usuario1, moduloDW1));
-		savePreguntaIfNotExist(new Pregunta("¿Para qué sirve CSS?", LocalDate.now(), usuario1, moduloDW1));
+		savePreguntaIfNotExist(new Pregunta("¿Qué es HTML?", LocalDateTime.now(), usuario1, moduloDW1));
+		savePreguntaIfNotExist(new Pregunta("¿Para qué sirve CSS?", LocalDateTime.now(), usuario1, moduloDW1));
 		savePreguntaIfNotExist(
-				new Pregunta("¿Qué es JavaScript y cómo se utiliza?", LocalDate.now(), usuario1, moduloDW1));
+				new Pregunta("¿Qué es JavaScript y cómo se utiliza?", LocalDateTime.now(), usuario1, moduloDW1));
 		savePreguntaIfNotExist(
-				new Pregunta("¿Cómo puedo hacer una página web responsive?", LocalDate.now(), usuario1, moduloDW1));
+				new Pregunta("¿Cómo puedo hacer una página web responsive?", LocalDateTime.now(), usuario1, moduloDW1));
 		savePreguntaIfNotExist(new Pregunta("¿Qué es un framework y cuál debo usar para desarrollo web?",
-				LocalDate.now(), usuario1, moduloDW1));
-		savePreguntaIfNotExist(new Pregunta("¿Cómo se realiza la integración de APIs en un sitio web?", LocalDate.now(),
+				LocalDateTime.now(), usuario1, moduloDW1));
+		savePreguntaIfNotExist(new Pregunta("¿Cómo se realiza la integración de APIs en un sitio web?", LocalDateTime.now(),
 				usuario1, moduloDW1));
-		savePreguntaIfNotExist(new Pregunta("¿Qué es el DOM y cómo se manipula con JavaScript?", LocalDate.now(),
+		savePreguntaIfNotExist(new Pregunta("¿Qué es el DOM y cómo se manipula con JavaScript?", LocalDateTime.now(),
 				usuario1, moduloDW1));
 		savePreguntaIfNotExist(new Pregunta("¿Cuáles son las mejores prácticas para el SEO en desarrollo web?",
-				LocalDate.now(), usuario1, moduloDW1));
+				LocalDateTime.now(), usuario1, moduloDW1));
 		savePreguntaIfNotExist(new Pregunta("¿Qué es Git y cómo se utiliza en proyectos de desarrollo web?",
-				LocalDate.now(), usuario1, moduloDW1));
+				LocalDateTime.now(), usuario1, moduloDW1));
 
 		// UI/UX
 		savePreguntaIfNotExist(
-				new Pregunta("¿Qué es la experiencia de usuario?", LocalDate.now(), usuario1, moduloUIUX1));
-		savePreguntaIfNotExist(new Pregunta("¿Cuáles son las mejores prácticas en diseño UI?", LocalDate.now(),
+				new Pregunta("¿Qué es la experiencia de usuario?", LocalDateTime.now(), usuario1, moduloUIUX1));
+		savePreguntaIfNotExist(new Pregunta("¿Cuáles son las mejores prácticas en diseño UI?", LocalDateTime.now(),
 				usuario1, moduloUIUX1));
-		savePreguntaIfNotExist(new Pregunta("¿Cómo se realiza una investigación de usuarios efectiva?", LocalDate.now(),
+		savePreguntaIfNotExist(new Pregunta("¿Cómo se realiza una investigación de usuarios efectiva?", LocalDateTime.now(),
 				usuario1, moduloUIUX1));
 		savePreguntaIfNotExist(new Pregunta("¿Qué herramientas se utilizan para el prototipado y wireframing?",
-				LocalDate.now(), usuario1, moduloUIUX1));
+				LocalDateTime.now(), usuario1, moduloUIUX1));
 
 		// Logotipos y Branding
-		savePreguntaIfNotExist(new Pregunta("¿Qué es un logotipo efectivo?", LocalDate.now(), usuario1, moduloLB1));
+		savePreguntaIfNotExist(new Pregunta("¿Qué es un logotipo efectivo?", LocalDateTime.now(), usuario1, moduloLB1));
 		savePreguntaIfNotExist(
-				new Pregunta("¿Cómo se crea una estrategia de marca?", LocalDate.now(), usuario1, moduloLB1));
-		savePreguntaIfNotExist(new Pregunta("¿Cuál es la diferencia entre un logotipo y una marca?", LocalDate.now(),
+				new Pregunta("¿Cómo se crea una estrategia de marca?", LocalDateTime.now(), usuario1, moduloLB1));
+		savePreguntaIfNotExist(new Pregunta("¿Cuál es la diferencia entre un logotipo y una marca?", LocalDateTime.now(),
 				usuario1, moduloLB1));
-		savePreguntaIfNotExist(new Pregunta("¿Qué características debe tener un buen logotipo?", LocalDate.now(),
+		savePreguntaIfNotExist(new Pregunta("¿Qué características debe tener un buen logotipo?", LocalDateTime.now(),
 				usuario1, moduloLB1));
-		savePreguntaIfNotExist(new Pregunta("¿Cómo influye el color en el diseño de un logotipo?", LocalDate.now(),
+		savePreguntaIfNotExist(new Pregunta("¿Cómo influye el color en el diseño de un logotipo?", LocalDateTime.now(),
 				usuario1, moduloLB1));
-		savePreguntaIfNotExist(new Pregunta("¿Qué importancia tiene la tipografía en un logotipo?", LocalDate.now(),
+		savePreguntaIfNotExist(new Pregunta("¿Qué importancia tiene la tipografía en un logotipo?", LocalDateTime.now(),
 				usuario1, moduloLB1));
 		savePreguntaIfNotExist(new Pregunta("¿Cómo se puede modernizar un logotipo sin perder su esencia?",
-				LocalDate.now(), usuario1, moduloLB1));
+				LocalDateTime.now(), usuario1, moduloLB1));
 
 		// Ilustración
 		savePreguntaIfNotExist(
-				new Pregunta("¿Qué herramientas necesito para ilustrar?", LocalDate.now(), usuario1, moduloIL1));
+				new Pregunta("¿Qué herramientas necesito para ilustrar?", LocalDateTime.now(), usuario1, moduloIL1));
 
 		// 3D y Animación
 		savePreguntaIfNotExist(
-				new Pregunta("¿Qué software es mejor para animación 3D?", LocalDate.now(), usuario1, modulo3DA1));
+				new Pregunta("¿Qué software es mejor para animación 3D?", LocalDateTime.now(), usuario1, modulo3DA1));
 		savePreguntaIfNotExist(
-				new Pregunta("¿Cómo se hace el rigging de un modelo 3D?", LocalDate.now(), usuario1, modulo3DA1));
-		savePreguntaIfNotExist(new Pregunta("¿Qué es la texturización en 3D y por qué es importante?", LocalDate.now(),
+				new Pregunta("¿Cómo se hace el rigging de un modelo 3D?", LocalDateTime.now(), usuario1, modulo3DA1));
+		savePreguntaIfNotExist(new Pregunta("¿Qué es la texturización en 3D y por qué es importante?", LocalDateTime.now(),
 				usuario1, modulo3DA1));
 		savePreguntaIfNotExist(
-				new Pregunta("¿Cómo se crean materiales realistas en 3D?", LocalDate.now(), usuario1, modulo3DA1));
+				new Pregunta("¿Cómo se crean materiales realistas en 3D?", LocalDateTime.now(), usuario1, modulo3DA1));
 		savePreguntaIfNotExist(
-				new Pregunta("¿Qué es el renderizado y cuáles son sus tipos?", LocalDate.now(), usuario1, modulo3DA1));
+				new Pregunta("¿Qué es el renderizado y cuáles son sus tipos?", LocalDateTime.now(), usuario1, modulo3DA1));
 		savePreguntaIfNotExist(
-				new Pregunta("¿Cómo se puede optimizar el renderizado en 3D?", LocalDate.now(), usuario1, modulo3DA1));
+				new Pregunta("¿Cómo se puede optimizar el renderizado en 3D?", LocalDateTime.now(), usuario1, modulo3DA1));
 		savePreguntaIfNotExist(new Pregunta("¿Qué es la animación de personajes y cuáles son sus principios básicos?",
-				LocalDate.now(), usuario1, modulo3DA1));
+				LocalDateTime.now(), usuario1, modulo3DA1));
 		savePreguntaIfNotExist(
-				new Pregunta("¿Cómo se usa el motion capture en animación 3D?", LocalDate.now(), usuario1, modulo3DA1));
+				new Pregunta("¿Cómo se usa el motion capture en animación 3D?", LocalDateTime.now(), usuario1, modulo3DA1));
 		savePreguntaIfNotExist(
-				new Pregunta("¿Qué es la iluminación global en 3D?", LocalDate.now(), usuario1, modulo3DA1));
+				new Pregunta("¿Qué es la iluminación global en 3D?", LocalDateTime.now(), usuario1, modulo3DA1));
 		savePreguntaIfNotExist(new Pregunta("¿Cuáles son los diferentes tipos de cámaras usadas en 3D y animación?",
-				LocalDate.now(), usuario1, modulo3DA1));
+				LocalDateTime.now(), usuario1, modulo3DA1));
 		savePreguntaIfNotExist(new Pregunta("¿Cómo se crea un storyboard para un proyecto de animación?",
-				LocalDate.now(), usuario1, modulo3DA1));
+				LocalDateTime.now(), usuario1, modulo3DA1));
 		savePreguntaIfNotExist(
-				new Pregunta("¿Qué es la cinemática inversa en animación 3D?", LocalDate.now(), usuario1, modulo3DA1));
+				new Pregunta("¿Qué es la cinemática inversa en animación 3D?", LocalDateTime.now(), usuario1, modulo3DA1));
 
 	}
 

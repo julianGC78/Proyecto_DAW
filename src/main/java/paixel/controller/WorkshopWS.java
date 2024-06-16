@@ -12,7 +12,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -45,61 +44,76 @@ public class WorkshopWS {
 
 	Map<String, Object> response = new HashMap<String, Object>();
 
-//	@PostMapping("/add")
-//	public ResponseEntity<?> addWorkshop(@RequestBody Map<String, Object> workshopData) {
-//		String contenido = (String) workshopData.get("contenido");
-//		String descripcion = (String) workshopData.get("descripcion");
-//		LocalDate fecha = LocalDate.parse((String) workshopData.get("fecha"));
-//		Integer idUsuario = Integer.parseInt((String) workshopData.get("idusuario"));
-//
-//		// Buscar el usuario por id
-//		User user = serviceUserImpl.findById(idUsuario)
-//				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-//
-//		// Crear y guardar el workshop
-//		Workshop workshop = new Workshop();
-//		workshop.setContenido(contenido);
-//		workshop.setDescripcion(descripcion);
-//		workshop.setFecha(fecha);
-//		workshop.setUsuario(user);
-//
-//		serviceWorkshopImpl.save(workshop);
-//		return new ResponseEntity<>(workshop, HttpStatus.OK);
-//	}
-	
 	@PostMapping("/add")
 	public ResponseEntity<?> addWorkshop(
-	        @RequestParam("contenido") String contenido,
-	        @RequestParam("descripcion") String descripcion,
-	        @RequestParam("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
-	        @RequestParam("idusuario") Integer idUsuario,
-	        @RequestParam("imagen") MultipartFile imagen) {
-	    
+	    @RequestParam("contenido") String contenido,
+	    @RequestParam("descripcion") String descripcion,
+	    @RequestParam("fecha") String fecha,
+	    @RequestParam("idusuario") Integer idUsuario) {
+
 	    Map<String, Object> response = new HashMap<>();
 	    try {
+	        // Convertir la fecha
+	        LocalDate parsedFecha = LocalDate.parse(fecha);
+
 	        // Buscar el usuario por id
 	        User user = serviceUserImpl.findById(idUsuario)
 	                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
 	        // Crear y guardar el workshop
 	        Workshop workshop = new Workshop();
-	        workshop.setContenido(contenido);
+	        workshop.setContenido("/images/workshop/" + contenido); // Construir la ruta completa
 	        workshop.setDescripcion(descripcion);
-	        workshop.setFecha(fecha);
+	        workshop.setFecha(parsedFecha);
 	        workshop.setUsuario(user);
 
-	        // Guardar la imagen en el sistema de archivos
-	        String imagenPath = saveImage(imagen);
-	        // Aquí puedes añadir la lógica para guardar la ruta de la imagen si tienes un campo para ello en la entidad Workshop
-	        // Por ejemplo: workshop.setImagePath(imagenPath);
-
-	        Workshop nuevoWorkshop = serviceWorkshopImpl.save(workshop);
-	        return new ResponseEntity<>(nuevoWorkshop, HttpStatus.OK);
+	        serviceWorkshopImpl.save(workshop);
+	        return new ResponseEntity<>(workshop, HttpStatus.OK);
+	    } catch (RuntimeException e) {
+	        response.put("message", e.getMessage());
+	        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	    } catch (Exception e) {
-	        response.put("message", "Error al añadir el workshop: " + e.getMessage());
-	        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	        response.put("message", "Error al añadir el workshop");
+	        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	    }
 	}
+
+
+
+	
+//	@PostMapping("/add")
+//	public ResponseEntity<?> addWorkshop(
+//	        @RequestParam("contenido") String contenido,
+//	        @RequestParam("descripcion") String descripcion,
+//	        @RequestParam("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
+//	        @RequestParam("idusuario") Integer idUsuario,
+//	        @RequestParam("imagen") MultipartFile imagen) {
+//	    
+//	    Map<String, Object> response = new HashMap<>();
+//	    try {
+//	        // Buscar el usuario por id
+//	        User user = serviceUserImpl.findById(idUsuario)
+//	                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+//
+//	        // Crear y guardar el workshop
+//	        Workshop workshop = new Workshop();
+//	        workshop.setContenido(contenido);
+//	        workshop.setDescripcion(descripcion);
+//	        workshop.setFecha(fecha);
+//	        workshop.setUsuario(user);
+//
+//	        // Guardar la imagen en el sistema de archivos
+//	        String imagenPath = saveImage(imagen);
+//	        // Aquí puedes añadir la lógica para guardar la ruta de la imagen si tienes un campo para ello en la entidad Workshop
+//	        // Por ejemplo: workshop.setImagePath(imagenPath);
+//
+//	        Workshop nuevoWorkshop = serviceWorkshopImpl.save(workshop);
+//	        return new ResponseEntity<>(nuevoWorkshop, HttpStatus.OK);
+//	    } catch (Exception e) {
+//	        response.put("message", "Error al añadir el workshop: " + e.getMessage());
+//	        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+//	    }
+//	}
 
 	private String saveImage(MultipartFile imagen) throws IOException {
 	    String folder = "path/to/save/images/";
